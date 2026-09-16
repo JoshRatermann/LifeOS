@@ -43,10 +43,28 @@
 
     </section>
 
-    <button id="add-button" class="add-button">
-      + Add something
+    <button id="add-button" class="add-button">+ Add something</button>
+
+<div id="add-modal" class="modal hidden">
+  <div class="modal-card">
+    <h2>What needs to get done?</h2>
+
+    <input
+      id="new-task-input"
+      type="text"
+      placeholder="e.g. Clean the bathroom"
+      autocomplete="off"
+    >
+
+    <button id="save-task-button" class="done-button">
+      Add task
     </button>
 
+    <button id="cancel-add" class="cancel-button">
+      Never mind
+    </button>
+  </div>
+</div>
   </main>
 
   <div id="skip-modal" class="modal hidden">
