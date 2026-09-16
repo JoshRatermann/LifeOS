@@ -200,38 +200,13 @@ async function addNewTask() {
 
   try {
 
-    const response = await fetch(
-      `${SUPABASE_URL}/rest/v1/tasks`,
-      {
-        method: "POST",
-
-        headers: {
-          "Content-Type": "application/json",
-          "apikey": SUPABASE_KEY,
-          "Authorization": `Bearer ${SUPABASE_KEY}`,
-          "Prefer": "return=minimal"
-        },
-
-        body: JSON.stringify({
-          user_id: USER_ID,
-          title: title,
-          category: "General",
-          priority: "routine",
-          status: "open",
-          estimated_minutes: 15,
-          energy_required: "normal"
-        })
-      }
-    );
-
-
-    if (!response.ok) {
-
-      const error =
-        await response.text();
-
-      throw new Error(error);
-    }
+await callSupabase(
+  "add_task",
+  {
+    p_user_id: USER_ID,
+    p_title: title
+  }
+);
 
 
     closeAddModal();
