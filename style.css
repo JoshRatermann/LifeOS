@@ -1,0 +1,160 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #f4f1eb;
+  color: #26322c;
+}
+
+.app {
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.header {
+  margin-bottom: 30px;
+}
+
+.eyebrow {
+  margin: 0 0 6px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  opacity: 0.6;
+}
+
+h1 {
+  margin: 0;
+  font-size: 32px;
+}
+
+.task-card {
+  background: white;
+  border-radius: 24px;
+  padding: 35px 30px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  text-align: center;
+}
+
+.task-icon {
+  font-size: 40px;
+  margin-bottom: 15px;
+}
+
+.task-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  opacity: 0.5;
+}
+
+.task-card h2 {
+  font-size: 28px;
+  margin: 15px 0;
+}
+
+.task-details {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  font-size: 14px;
+  opacity: 0.65;
+}
+
+.task-reason {
+  margin: 25px 0;
+  font-size: 15px;
+}
+
+.done-button,
+.skip-button,
+.add-button,
+.reason-button,
+.cancel-button {
+  width: 100%;
+  border: none;
+  border-radius: 14px;
+  padding: 15px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.done-button {
+  background: #26322c;
+  color: white;
+  font-weight: 700;
+  margin-top: 20px;
+}
+
+.skip-button {
+  background: transparent;
+  color: #26322c;
+  margin-top: 8px;
+}
+
+.add-button {
+  margin-top: 20px;
+  background: transparent;
+  border: 2px dashed #aaa;
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.hidden {
+  display: none;
+}
+
+.modal-card {
+  width: 100%;
+  max-width: 450px;
+  background: white;
+  border-radius: 22px;
+  padding: 25px;
+}
+
+.modal-card h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+.reason-button {
+  background: #f4f1eb;
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+.cancel-button {
+  background: transparent;
+  margin-top: 5px;
+}
+
+@media (max-width: 500px) {
+  .app {
+    padding: 25px 15px;
+  }
+
+  h1 {
+    font-size: 28px;
+  }
+
+  .task-card {
+    padding: 30px 20px;
+  }
+
+  .task-card h2 {
+    font-size: 24px;
+  }
+}
