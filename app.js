@@ -133,7 +133,58 @@ function openSkipModal() {
 
 
 function closeSkipModal() {
+function openAddModal() {
+  document.getElementById("add-modal").classList.remove("hidden");
+  document.getElementById("new-task-input").focus();
+}
 
+function closeAddModal() {
+  document.getElementById("add-modal").classList.add("hidden");
+  document.getElementById("new-task-input").value = "";
+}
+
+async function addNewTask() {
+  const input = document.getElementById("new-task-input");
+  const title = input.value.trim();
+
+  if (!title) return;
+
+  try {
+    const response = await fetch(
+      `${SUPABASE_URL}/rest/v1/tasks`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "apikey": SUPABASE_KEY,
+          "Authorization": `Bearer ${SUPABASE_KEY}`,
+          "Prefer": "return=minimal"
+        },
+        body: JSON.stringify({
+          user_id: USER_ID,
+          title: title,
+          category: "General",
+          priority: "routine",
+          status: "open",
+          estimated_minutes: 15,
+          energy_required: "normal"
+        })
+      }
+    );
+
+    if (!response.ok) {
+      const error = await response.text();
+      throw new Error(error);
+    }
+
+    closeAddModal();
+    await getNextTask();
+
+  } catch (error) {
+    console.error(error);
+    alert("I couldn't add that task.");
+  }
+}
   document
     .getElementById("skip-modal")
     .classList.add("hidden");
