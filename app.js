@@ -61,17 +61,17 @@ async function getNextTask() {
     document.getElementById("task-reason").textContent =
       currentTask.reason || "";
 
-  } catch (error) {
+ } catch (error) {
 
-    console.error(error);
+    console.error("SUPABASE ERROR:", error);
 
     document.getElementById("task-title").textContent =
-      "Something went wrong";
+      "Connection problem";
 
     document.getElementById("task-reason").textContent =
-      "I couldn't connect to your task list.";
+      error.message || "I couldn't connect to your task list.";
 
-  }
+} 
 }
 
 
