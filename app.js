@@ -1,6 +1,5 @@
-const SUPABASE_URL = "https://kezskesguutvkzkgbmto.supabase.co";
+const SUPABASE_URL = "https://kezskesguutvkzkgbmto.supabase.co/rest/v1/";
 const SUPABASE_KEY = "sb_publishable_Nfptf1zo2bBteS4eHDMn7g_u1g6loSt";
-
 const USER_ID = "7ddde65a-d770-4682-be2d-86ac7e4b2a52";
 
 let currentTask = null;
@@ -28,10 +27,12 @@ async function callSupabase(functionName, body) {
 }
 
 
+// -------------------------
+// GET NEXT TASK
+// -------------------------
+
 async function getNextTask() {
-
   try {
-
     const result = await callSupabase(
       "get_next_task",
       {
@@ -61,45 +62,41 @@ async function getNextTask() {
     document.getElementById("task-reason").textContent =
       currentTask.reason || "";
 
- } catch (error) {
-
-    console.error("SUPABASE ERROR:", error);
+  } catch (error) {
+    console.error(error);
 
     document.getElementById("task-title").textContent =
-      "Connection problem";
+      "Something went wrong";
 
     document.getElementById("task-reason").textContent =
-      error.message || "I couldn't connect to your task list.";
-
-} 
+      error.message;
+  }
 }
 
 
 function showNoTasks() {
-
   currentTask = null;
 
   document.getElementById("task-title").textContent =
     "You're all caught up!";
 
-  document.getElementById("task-category").textContent =
-    "";
+  document.getElementById("task-category").textContent = "";
 
-  document.getElementById("task-time").textContent =
-    "";
+  document.getElementById("task-time").textContent = "";
 
   document.getElementById("task-reason").textContent =
     "Nothing needs your attention right now.";
-
 }
 
 
-async function completeCurrentTask() {
+// -------------------------
+// COMPLETE TASK
+// -------------------------
 
+async function completeCurrentTask() {
   if (!currentTask) return;
 
   try {
-
     await callSupabase(
       "complete_task",
       {
@@ -111,93 +108,37 @@ async function completeCurrentTask() {
     await getNextTask();
 
   } catch (error) {
-
     console.error(error);
 
     alert("I couldn't mark that task as complete.");
-
   }
-
 }
 
 
-function openSkipModal() {
+// -------------------------
+// SKIP TASK
+// -------------------------
 
+function openSkipModal() {
   if (!currentTask) return;
 
   document
     .getElementById("skip-modal")
     .classList.remove("hidden");
-
 }
 
 
 function closeSkipModal() {
-function openAddModal() {
-  document.getElementById("add-modal").classList.remove("hidden");
-  document.getElementById("new-task-input").focus();
-}
-
-function closeAddModal() {
-  document.getElementById("add-modal").classList.add("hidden");
-  document.getElementById("new-task-input").value = "";
-}
-
-async function addNewTask() {
-  const input = document.getElementById("new-task-input");
-  const title = input.value.trim();
-
-  if (!title) return;
-
-  try {
-    const response = await fetch(
-      `${SUPABASE_URL}/rest/v1/tasks`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "apikey": SUPABASE_KEY,
-          "Authorization": `Bearer ${SUPABASE_KEY}`,
-          "Prefer": "return=minimal"
-        },
-        body: JSON.stringify({
-          user_id: USER_ID,
-          title: title,
-          category: "General",
-          priority: "routine",
-          status: "open",
-          estimated_minutes: 15,
-          energy_required: "normal"
-        })
-      }
-    );
-
-    if (!response.ok) {
-      const error = await response.text();
-      throw new Error(error);
-    }
-
-    closeAddModal();
-    await getNextTask();
-
-  } catch (error) {
-    console.error(error);
-    alert("I couldn't add that task.");
-  }
-}
   document
     .getElementById("skip-modal")
     .classList.add("hidden");
-
 }
 
 
 async function skipCurrentTask(reason) {
-
   if (!currentTask) return;
 
   try {
-
     await callSupabase(
       "skip_task",
       {
@@ -210,33 +151,67 @@ async function skipCurrentTask(reason) {
     );
 
     closeSkipModal();
-function openAddModal() {
-  document.getElementById("add-modal").classList.remove("hidden");
-  document.getElementById("new-task-input").focus();
+
+    await getNextTask();
+
+  } catch (error) {
+    console.error(error);
+
+    alert("I couldn't reschedule that task.");
+  }
 }
+
+
+// -------------------------
+// ADD TASK
+// -------------------------
+
+function openAddModal() {
+  document
+    .getElementById("add-modal")
+    .classList.remove("hidden");
+
+  document
+    .getElementById("new-task-input")
+    .focus();
+}
+
 
 function closeAddModal() {
-  document.getElementById("add-modal").classList.add("hidden");
-  document.getElementById("new-task-input").value = "";
+  document
+    .getElementById("add-modal")
+    .classList.add("hidden");
+
+  document
+    .getElementById("new-task-input")
+    .value = "";
 }
 
+
 async function addNewTask() {
-  const input = document.getElementById("new-task-input");
-  const title = input.value.trim();
+
+  const input =
+    document.getElementById("new-task-input");
+
+  const title =
+    input.value.trim();
 
   if (!title) return;
 
   try {
+
     const response = await fetch(
       `${SUPABASE_URL}/rest/v1/tasks`,
       {
         method: "POST",
+
         headers: {
           "Content-Type": "application/json",
           "apikey": SUPABASE_KEY,
           "Authorization": `Bearer ${SUPABASE_KEY}`,
           "Prefer": "return=minimal"
         },
+
         body: JSON.stringify({
           user_id: USER_ID,
           title: title,
@@ -249,31 +224,36 @@ async function addNewTask() {
       }
     );
 
+
     if (!response.ok) {
-      const error = await response.text();
+
+      const error =
+        await response.text();
+
       throw new Error(error);
     }
 
+
     closeAddModal();
+
     await getNextTask();
 
-  } catch (error) {
-    console.error(error);
-    alert("I couldn't add that task.");
-  }
-}
-    await getNextTask();
 
   } catch (error) {
 
     console.error(error);
 
-    alert("I couldn't reschedule that task.");
-
+    alert(
+      "I couldn't add that task: " +
+      error.message
+    );
   }
-
 }
 
+
+// -------------------------
+// BUTTONS
+// -------------------------
 
 document
   .getElementById("done-button")
@@ -297,9 +277,7 @@ document
     "click",
     closeSkipModal
   );
-document.getElementById("add-button").addEventListener("click", openAddModal);
-document.getElementById("cancel-add").addEventListener("click", closeAddModal);
-document.getElementById("save-task-button").addEventListener("click", addNewTask);
+
 
 document
   .querySelectorAll(".reason-button")
@@ -313,11 +291,38 @@ document
           button.dataset.reason;
 
         skipCurrentTask(reason);
-
       }
     );
 
   });
 
+
+document
+  .getElementById("add-button")
+  .addEventListener(
+    "click",
+    openAddModal
+  );
+
+
+document
+  .getElementById("cancel-add")
+  .addEventListener(
+    "click",
+    closeAddModal
+  );
+
+
+document
+  .getElementById("save-task-button")
+  .addEventListener(
+    "click",
+    addNewTask
+  );
+
+
+// -------------------------
+// START APP
+// -------------------------
 
 getNextTask();
