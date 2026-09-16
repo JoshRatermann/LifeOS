@@ -246,7 +246,9 @@ document
     "click",
     closeSkipModal
   );
-
+document.getElementById("add-button").addEventListener("click", openAddModal);
+document.getElementById("cancel-add").addEventListener("click", closeAddModal);
+document.getElementById("save-task-button").addEventListener("click", addNewTask);
 
 document
   .querySelectorAll(".reason-button")
