@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Life Manager</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <main class="app">
+
+    <header class="header">
+      <div>
+        <p class="eyebrow">TODAY</p>
+        <h1>What should I do?</h1>
+      </div>
+    </header>
+
+    <section class="task-card">
+
+      <div class="task-icon">🧠</div>
+
+      <p class="task-label">YOUR NEXT TASK</p>
+
+      <h2 id="task-title">Loading...</h2>
+
+      <div class="task-details">
+        <span id="task-category">—</span>
+        <span id="task-time">—</span>
+      </div>
+
+      <p id="task-reason" class="task-reason"></p>
+
+      <button id="done-button" class="done-button">
+        ✓ Done
+      </button>
+
+      <button id="skip-button" class="skip-button">
+        Skip →
+      </button>
+
+    </section>
+
+    <button id="add-button" class="add-button">
+      + Add something
+    </button>
+
+  </main>
+
+  <div id="skip-modal" class="modal hidden">
+
+    <div class="modal-card">
+
+      <h2>Why are you skipping this?</h2>
+
+      <button class="reason-button" data-reason="too_tired">
+        😴 I'm too tired
+      </button>
+
+      <button class="reason-button" data-reason="not_enough_time">
+        ⏱️ I don't have enough time
+      </button>
+
+      <button class="reason-button" data-reason="something_came_up">
+        🚨 Something came up
+      </button>
+
+      <button class="reason-button" data-reason="cant_do_right_now">
+        🙅 I can't do this right now
+      </button>
+
+      <button class="reason-button" data-reason="dont_feel_like_it">
+        😑 I don't feel like it
+      </button>
+
+      <button id="cancel-skip" class="cancel-button">
+        Never mind
+      </button>
+
+    </div>
+
+  </div>
+
+  <script src="app.js"></script>
+
+</body>
+</html>
