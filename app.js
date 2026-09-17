@@ -28,9 +28,9 @@ async function callSupabase(functionName, body) {
 }
 
 
-// -------------------------
+// =========================
 // GET NEXT TASK
-// -------------------------
+// =========================
 
 async function getNextTask() {
   try {
@@ -64,7 +64,7 @@ async function getNextTask() {
       currentTask.reason || "";
 
   } catch (error) {
-    console.error(error);
+    console.error("GET NEXT TASK ERROR:", error);
 
     document.getElementById("task-title").textContent =
       "Something went wrong";
@@ -90,9 +90,9 @@ function showNoTasks() {
 }
 
 
-// -------------------------
+// =========================
 // COMPLETE TASK
-// -------------------------
+// =========================
 
 async function completeCurrentTask() {
   if (!currentTask) return;
@@ -110,15 +110,14 @@ async function completeCurrentTask() {
 
   } catch (error) {
     console.error(error);
-
     alert("I couldn't mark that task as complete.");
   }
 }
 
 
-// -------------------------
+// =========================
 // SKIP TASK
-// -------------------------
+// =========================
 
 function openSkipModal() {
   if (!currentTask) return;
@@ -157,15 +156,14 @@ async function skipCurrentTask(reason) {
 
   } catch (error) {
     console.error(error);
-
     alert("I couldn't reschedule that task.");
   }
 }
 
 
-// -------------------------
+// =========================
 // ADD TASK
-// -------------------------
+// =========================
 
 function openAddModal() {
   selectedDueDate = null;
@@ -194,62 +192,24 @@ function closeAddModal() {
   document
     .getElementById("new-task-input")
     .value = "";
+
+  selectedDueDate = null;
 }
 
 
-async function addNewTask() {
-  const input = document.getElementById("new-task-input");
-  const title = input.value.trim();
+function formatDate(date) {
+  const year = date.getFullYear();
 
-  if (!title) {
-    alert("Tell me what needs to get done first.");
-    return;
-  }
+  const month =
+    String(date.getMonth() + 1).padStart(2, "0");
 
-  if (!selectedDueDate) {
-    alert("Choose when this needs to be done.");
-    return;
-  }
+  const day =
+    String(date.getDate()).padStart(2, "0");
 
-  try {
-    await callSupabase(
-      "add_task",
-      {
-        p_user_id: USER_ID,
-        p_title: title,
-        p_due_date: selectedDueDate
-      }
-    );
-
-    closeAddModal();
-    await getNextTask();
-
-  } catch (error) {
-    console.error(error);
-
-    alert(
-      "I couldn't add that task: " +
-      error.message
-    );
-  }
+  return `${year}-${month}-${day}`;
 }
 
 
-    closeAddModal();
-
-    await getNextTask();
-
-
-  } catch (error) {
-
-    console.error(error);
-
-    alert(
-      "I couldn't add that task: " +
-      error.message
-    );
-  }
-}
 function chooseDueDate(option) {
   const today = new Date();
 
@@ -259,15 +219,29 @@ function chooseDueDate(option) {
 
   if (option === "tomorrow") {
     const tomorrow = new Date(today);
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    selectedDueDate = formatDate(tomorrow);
+
+    tomorrow.setDate(
+      tomorrow.getDate() + 1
+    );
+
+    selectedDueDate =
+      formatDate(tomorrow);
   }
 
   if (option === "week") {
-    const endOfWeek = new Date(today);
-    const daysUntilSunday = 7 - endOfWeek.getDay();
-    endOfWeek.setDate(endOfWeek.getDate() + daysUntilSunday);
-    selectedDueDate = formatDate(endOfWeek);
+    const endOfWeek =
+      new Date(today);
+
+    const daysUntilSunday =
+      7 - endOfWeek.getDay();
+
+    endOfWeek.setDate(
+      endOfWeek.getDate() +
+      daysUntilSunday
+    );
+
+    selectedDueDate =
+      formatDate(endOfWeek);
   }
 
   if (option === "none") {
@@ -291,21 +265,62 @@ function chooseDueDate(option) {
 }
 
 
-function formatDate(date) {
-  const year = date.getFullYear();
+async function addNewTask() {
+  const input =
+    document.getElementById("new-task-input");
 
-  const month =
-    String(date.getMonth() + 1).padStart(2, "0");
+  const title =
+    input.value.trim();
 
-  const day =
-    String(date.getDate()).padStart(2, "0");
+  if (!title) {
+    alert(
+      "Tell me what needs to get done first."
+    );
 
-  return `${year}-${month}-${day}`;
+    return;
+  }
+
+  if (!selectedDueDate) {
+    alert(
+      "Choose when this needs to be done."
+    );
+
+    return;
+  }
+
+  try {
+
+    await callSupabase(
+      "add_task",
+      {
+        p_user_id: USER_ID,
+        p_title: title,
+        p_due_date: selectedDueDate
+      }
+    );
+
+    closeAddModal();
+
+    await getNextTask();
+
+  } catch (error) {
+
+    console.error(
+      "ADD TASK ERROR:",
+      error
+    );
+
+    alert(
+      "I couldn't add that task: " +
+      error.message
+    );
+  }
 }
 
-// -------------------------
-// BUTTONS
-// -------------------------
+
+// =========================
+// BUTTON CONNECTIONS
+// =========================
 
 document
   .getElementById("done-button")
@@ -355,16 +370,7 @@ document
     "click",
     openAddModal
   );
-document
-  .querySelectorAll(".due-button")
-  .forEach(button => {
-    button.addEventListener(
-      "click",
-      () => {
-        chooseDueDate(button.dataset.due);
-      }
-    );
-  });
+
 
 document
   .getElementById("cancel-add")
@@ -382,38 +388,24 @@ document
   );
 
 
-// -------------------------
-// START APP
-// -------------------------
+document
+  .querySelectorAll(".due-button")
+  .forEach(button => {
+
+    button.addEventListener(
+      "click",
+      () => {
+        chooseDueDate(
+          button.dataset.due
+        );
+      }
+    );
+
+  });
+
+
+// =========================
+// START
+// =========================
 
 getNextTask();
-.due-label {
-  margin: 18px 0 10px;
-  font-weight: 600;
-}
-
-.due-button {
-  width: 100%;
-  padding: 12px;
-  margin-bottom: 8px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  background: white;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-.due-button.selected {
-  border: 2px solid #333;
-  font-weight: 600;
-}
-
-#new-task-input {
-  width: 100%;
-  box-sizing: border-box;
-  padding: 12px;
-  margin-top: 10px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  font-size: 16px;
-}
