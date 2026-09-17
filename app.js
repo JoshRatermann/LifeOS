@@ -410,7 +410,6 @@ document
 
 getNextTask();
 // Today / Upcoming navigation
-// Today / Upcoming navigation
 
 const todayTab = document.getElementById("today-tab");
 const upcomingTab = document.getElementById("upcoming-tab");
