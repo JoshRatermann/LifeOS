@@ -3,6 +3,7 @@ const SUPABASE_KEY = "sb_publishable_Nfptf1zo2bBteS4eHDMn7g_u1g6loSt";
 const USER_ID = "7ddde65a-d770-4682-be2d-86ac7e4b2a52";
 
 let currentTask = null;
+let selectedDueDate = null;
 
 async function callSupabase(functionName, body) {
   const response = await fetch(
@@ -167,6 +168,14 @@ async function skipCurrentTask(reason) {
 // -------------------------
 
 function openAddModal() {
+  selectedDueDate = null;
+
+  document
+    .querySelectorAll(".due-button")
+    .forEach(button => {
+      button.classList.remove("selected");
+    });
+
   document
     .getElementById("add-modal")
     .classList.remove("hidden");
@@ -241,7 +250,58 @@ async function addNewTask() {
     );
   }
 }
+function chooseDueDate(option) {
+  const today = new Date();
 
+  if (option === "today") {
+    selectedDueDate = formatDate(today);
+  }
+
+  if (option === "tomorrow") {
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    selectedDueDate = formatDate(tomorrow);
+  }
+
+  if (option === "week") {
+    const endOfWeek = new Date(today);
+    const daysUntilSunday = 7 - endOfWeek.getDay();
+    endOfWeek.setDate(endOfWeek.getDate() + daysUntilSunday);
+    selectedDueDate = formatDate(endOfWeek);
+  }
+
+  if (option === "none") {
+    selectedDueDate = null;
+  }
+
+  document
+    .querySelectorAll(".due-button")
+    .forEach(button => {
+      button.classList.remove("selected");
+    });
+
+  const selectedButton =
+    document.querySelector(
+      `.due-button[data-due="${option}"]`
+    );
+
+  if (selectedButton) {
+    selectedButton.classList.add("selected");
+  }
+}
+
+
+function formatDate(date) {
+  const year = date.getFullYear();
+
+  const month =
+    String(date.getMonth() + 1).padStart(2, "0");
+
+  const day =
+    String(date.getDate()).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+}
 
 // -------------------------
 // BUTTONS
@@ -295,7 +355,16 @@ document
     "click",
     openAddModal
   );
-
+document
+  .querySelectorAll(".due-button")
+  .forEach(button => {
+    button.addEventListener(
+      "click",
+      () => {
+        chooseDueDate(button.dataset.due);
+      }
+    );
+  });
 
 document
   .getElementById("cancel-add")
@@ -318,3 +387,33 @@ document
 // -------------------------
 
 getNextTask();
+.due-label {
+  margin: 18px 0 10px;
+  font-weight: 600;
+}
+
+.due-button {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 8px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background: white;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.due-button.selected {
+  border: 2px solid #333;
+  font-weight: 600;
+}
+
+#new-task-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px;
+  margin-top: 10px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 16px;
+}
