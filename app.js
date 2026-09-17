@@ -1,4 +1,4 @@
-const SUPABASE_URL = "https://kezskesguutvkzkgbmto.supabase.co/rest/v1/";
+const SUPABASE_URL = "https://kezskesguutvkzkgbmto.supabase.co";
 const SUPABASE_KEY = "sb_publishable_Nfptf1zo2bBteS4eHDMn7g_u1g6loSt";
 const USER_ID = "7ddde65a-d770-4682-be2d-86ac7e4b2a52";
 
