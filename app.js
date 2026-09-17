@@ -421,7 +421,9 @@ todayTab.addEventListener("click", () => {
   todayTab.classList.add("active");
   upcomingTab.classList.remove("active");
 
-  todayView.classList.remove("hidden");
+  document.querySelector(".task-card").classList.remove("hidden");
+  document.querySelector(".add-button").classList.remove("hidden");
+
   upcomingView.classList.add("hidden");
 
   pageTitle.textContent = "What should I do?";
@@ -431,7 +433,9 @@ upcomingTab.addEventListener("click", () => {
   upcomingTab.classList.add("active");
   todayTab.classList.remove("active");
 
-  todayView.classList.add("hidden");
+  document.querySelector(".task-card").classList.add("hidden");
+  document.querySelector(".add-button").classList.add("hidden");
+
   upcomingView.classList.remove("hidden");
 
   pageTitle.textContent = "What's coming up";
