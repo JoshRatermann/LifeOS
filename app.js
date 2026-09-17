@@ -189,24 +189,41 @@ function closeAddModal() {
 
 
 async function addNewTask() {
+  const input = document.getElementById("new-task-input");
+  const title = input.value.trim();
 
-  const input =
-    document.getElementById("new-task-input");
+  if (!title) {
+    alert("Tell me what needs to get done first.");
+    return;
+  }
 
-  const title =
-    input.value.trim();
-
-  if (!title) return;
+  if (!selectedDueDate) {
+    alert("Choose when this needs to be done.");
+    return;
+  }
 
   try {
+    await callSupabase(
+      "add_task",
+      {
+        p_user_id: USER_ID,
+        p_title: title,
+        p_due_date: selectedDueDate
+      }
+    );
 
-await callSupabase(
-  "add_task",
-  {
-    p_user_id: USER_ID,
-    p_title: title
+    closeAddModal();
+    await getNextTask();
+
+  } catch (error) {
+    console.error(error);
+
+    alert(
+      "I couldn't add that task: " +
+      error.message
+    );
   }
-);
+}
 
 
     closeAddModal();
