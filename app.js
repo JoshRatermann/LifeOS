@@ -4,6 +4,7 @@ const USER_ID = "7ddde65a-d770-4682-be2d-86ac7e4b2a52";
 
 let currentTask = null;
 let selectedDueDate = null;
+let selectedTimeHorizon = "none";
 
 async function callSupabase(functionName, body) {
   const response = await fetch(
@@ -166,7 +167,8 @@ async function skipCurrentTask(reason) {
 // =========================
 
 function openAddModal() {
-  selectedDueDate = null;
+  selectedDueDate = null
+  selectedTimeHorizon = null;
 
   document
     .querySelectorAll(".due-button")
@@ -213,8 +215,12 @@ function formatDate(date) {
 function chooseDueDate(option) {
   const today = new Date();
 
+  selectedDueDate = null;
+  selectedTimeHorizon = "none";
+
   if (option === "today") {
     selectedDueDate = formatDate(today);
+    selectedTimeHorizon = "today";
   }
 
   if (option === "tomorrow") {
@@ -226,27 +232,20 @@ function chooseDueDate(option) {
 
     selectedDueDate =
       formatDate(tomorrow);
+
+    selectedTimeHorizon = "tomorrow";
   }
 
   if (option === "week") {
-    const endOfWeek =
-      new Date(today);
-
-    const daysUntilSunday =
-      7 - endOfWeek.getDay();
-
-    endOfWeek.setDate(
-      endOfWeek.getDate() +
-      daysUntilSunday
-    );
-
-    selectedDueDate =
-      formatDate(endOfWeek);
+    selectedDueDate = null;
+    selectedTimeHorizon = "this_week";
   }
 
   if (option === "none") {
     selectedDueDate = null;
+    selectedTimeHorizon = "none";
   }
+
 
   document
     .querySelectorAll(".due-button")
@@ -280,7 +279,7 @@ async function addNewTask() {
     return;
   }
 
-  if (!selectedDueDate) {
+  if (!selectedTimeHorizon) {
     alert(
       "Choose when this needs to be done."
     );
@@ -295,7 +294,8 @@ async function addNewTask() {
       {
         p_user_id: USER_ID,
         p_title: title,
-        p_due_date: selectedDueDate
+        p_due_date: selectedDueDate,
+       p_time_horizon: selectedTimeHorizon
       }
     );
 
@@ -316,7 +316,6 @@ async function addNewTask() {
     );
   }
 }
-
 
 // =========================
 // BUTTON CONNECTIONS
