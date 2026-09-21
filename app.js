@@ -447,16 +447,14 @@ async function loadUpcomingTasks() {
   list.innerHTML = "<p>Loading...</p>";
 
   try {
-    const result = await callSupabase(
+    const tasks = await callSupabase(
       "get_upcoming_tasks",
       {
         p_user_id: USER_ID
       }
     );
 
-    const tasks = result || [];
-
-    if (tasks.length === 0) {
+    if (!tasks || tasks.length === 0) {
       list.innerHTML = `
         <div class="upcoming-empty">
           <p>Nothing coming up.</p>
@@ -484,42 +482,51 @@ async function loadUpcomingTasks() {
       html += `
         <div class="upcoming-group">
           <h3>Tomorrow</h3>
-
-          ${groups.tomorrow.map(task => `
-            <div class="upcoming-task">
-              <span>${escapeHtml(task.title)}</span>
-            </div>
-          `).join("")}
-        </div>
       `;
+
+      groups.tomorrow.forEach(task => {
+        html += `
+          <div class="upcoming-task">
+            <span>${task.title}</span>
+          </div>
+        `;
+      });
+
+      html += `</div>`;
     }
 
     if (groups.this_week.length > 0) {
       html += `
         <div class="upcoming-group">
           <h3>This Week</h3>
-
-          ${groups.this_week.map(task => `
-            <div class="upcoming-task">
-              <span>${escapeHtml(task.title)}</span>
-            </div>
-          `).join("")}
-        </div>
       `;
+
+      groups.this_week.forEach(task => {
+        html += `
+          <div class="upcoming-task">
+            <span>${task.title}</span>
+          </div>
+        `;
+      });
+
+      html += `</div>`;
     }
 
     if (groups.none.length > 0) {
       html += `
         <div class="upcoming-group">
           <h3>No Deadline</h3>
-
-          ${groups.none.map(task => `
-            <div class="upcoming-task">
-              <span>${escapeHtml(task.title)}</span>
-            </div>
-          `).join("")}
-        </div>
       `;
+
+      groups.none.forEach(task => {
+        html += `
+          <div class="upcoming-task">
+            <span>${task.title}</span>
+          </div>
+        `;
+      });
+
+      html += `</div>`;
     }
 
     list.innerHTML = html;
