@@ -5,7 +5,8 @@ const USER_ID = "7ddde65a-d770-4682-be2d-86ac7e4b2a52";
 let currentTask = null;
 let selectedDueDate = null;
 let selectedTimeHorizon = "none"
-let selectedAvailableMinutes = 30;
+let selectedAvailableMinutes = 30
+let selectedEnergyLevel = "normal";
 
 async function callSupabase(functionName, body) {
   const response = await fetch(
@@ -567,6 +568,32 @@ document
       console.log(
         "Available minutes:",
         selectedAvailableMinutes
+      );
+
+      await getNextTask();
+    });
+
+  });
+document
+  .querySelectorAll(".energy-button")
+  .forEach(button => {
+
+    button.addEventListener("click", async () => {
+
+      document
+        .querySelectorAll(".energy-button")
+        .forEach(otherButton => {
+          otherButton.classList.remove("selected");
+        });
+
+      button.classList.add("selected");
+
+      selectedEnergyLevel =
+        button.dataset.energy;
+
+      console.log(
+        "Energy level:",
+        selectedEnergyLevel
       );
 
       await getNextTask();
