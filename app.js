@@ -6,7 +6,7 @@ let currentTask = null;
 let selectedDueDate = null;
 let selectedTimeHorizon = "none"
 let selectedAvailableMinutes = 30
-let selectedEnergyLevel = selectedEnergyLevel;
+let selectedEnergyLevel = "normal";
 
 async function callSupabase(functionName, body) {
   const response = await fetch(
