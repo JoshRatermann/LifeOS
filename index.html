@@ -12,10 +12,11 @@
 
   <header class="header">
     <div>
-      <div class="nav-tabs">
-        <button id="today-tab" class="nav-tab active">TODAY</button>
-        <button id="upcoming-tab" class="nav-tab">UPCOMING</button>
-      </div>
+     <div class="nav-tabs">
+  <button id="today-tab" class="nav-tab active">TODAY</button>
+  <button id="upcoming-tab" class="nav-tab">UPCOMING</button>
+  <button id="routines-tab" class="nav-tab">ROUTINES</button>
+</div>
 
       <h1 id="page-title">What should I do?</h1>
     </div>
@@ -120,7 +121,20 @@
     <h2>What's coming up</h2>
     <p>These are things you don't need to worry about yet.</p>
   </div>
+<section id="routines-view" class="hidden">
 
+  <div class="upcoming-header">
+    <h2>Things Life Manager keeps up with</h2>
+    <p>You tell me how often. I'll handle the rest.</p>
+  </div>
+
+  <div id="routines-list"></div>
+
+  <button id="add-routine-button" class="add-button">
+    + Add something
+  </button>
+
+</section>
   <div id="upcoming-list"></div>
 </section>
 
