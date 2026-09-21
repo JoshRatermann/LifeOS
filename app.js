@@ -38,13 +38,22 @@ async function callSupabase(functionName, body) {
 async function getNextTask() {
   try {
 
+    // Make sure any due recurring tasks become normal tasks first
+    await callSupabase(
+      "process_recurring_tasks",
+      {
+        p_user_id: USER_ID
+      }
+    );
+
     const result = await callSupabase(
       "get_next_task",
       {
         p_user_id: USER_ID,
         p_available_minutes:
           selectedAvailableMinutes || 30,
-        p_energy_level: selectedEnergyLevel,
+        p_energy_level:
+          selectedEnergyLevel || "normal",
         p_minimum_day: false
       }
     );
@@ -78,20 +87,6 @@ async function getNextTask() {
     document.getElementById("task-reason").textContent =
       error.message;
   }
-}
-
-function showNoTasks() {
-  currentTask = null;
-
-  document.getElementById("task-title").textContent =
-    "You're all caught up!";
-
-  document.getElementById("task-category").textContent = "";
-
-  document.getElementById("task-time").textContent = "";
-
-  document.getElementById("task-reason").textContent =
-    "Nothing needs your attention right now.";
 }
 
 
