@@ -545,3 +545,29 @@ async function loadUpcomingTasks() {
     `;
   }
 }
+// Available time selection
+
+document
+  .querySelectorAll(".time-button")
+  .forEach(button => {
+
+    button.addEventListener("click", () => {
+
+      document
+        .querySelectorAll(".time-button")
+        .forEach(otherButton => {
+          otherButton.classList.remove("selected");
+        });
+
+      button.classList.add("selected");
+
+      const minutes =
+        Number(button.dataset.minutes);
+
+      console.log(
+        "Available minutes:",
+        minutes
+      );
+    });
+
+  });
