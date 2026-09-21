@@ -447,31 +447,16 @@ async function loadUpcomingTasks() {
   list.innerHTML = "<p>Loading...</p>";
 
   try {
-    const response = await fetch(
-      `${SUPABASE_URL}/rest/v1/tasks?user_id=eq.${USER_ID}&status=eq.open&order=due_date.asc`,
+    const result = await callSupabase(
+      "get_upcoming_tasks",
       {
-        headers: {
-          apikey: SUPABASE_ANON_KEY,
-          Authorization: `Bearer ${SUPABASE_ANON_KEY}`
-        }
+        p_user_id: USER_ID
       }
     );
 
-    if (!response.ok) {
-      throw new Error("Could not load upcoming tasks.");
-    }
+    const tasks = result || [];
 
-    const tasks = await response.json();
-
-    const upcomingTasks = tasks.filter(task => {
-      return (
-        task.time_horizon === "tomorrow" ||
-        task.time_horizon === "this_week" ||
-        task.time_horizon === "none"
-      );
-    });
-
-    if (upcomingTasks.length === 0) {
+    if (tasks.length === 0) {
       list.innerHTML = `
         <div class="upcoming-empty">
           <p>Nothing coming up.</p>
@@ -487,7 +472,7 @@ async function loadUpcomingTasks() {
       none: []
     };
 
-    upcomingTasks.forEach(task => {
+    tasks.forEach(task => {
       if (groups[task.time_horizon]) {
         groups[task.time_horizon].push(task);
       }
@@ -499,6 +484,7 @@ async function loadUpcomingTasks() {
       html += `
         <div class="upcoming-group">
           <h3>Tomorrow</h3>
+
           ${groups.tomorrow.map(task => `
             <div class="upcoming-task">
               <span>${escapeHtml(task.title)}</span>
@@ -512,6 +498,7 @@ async function loadUpcomingTasks() {
       html += `
         <div class="upcoming-group">
           <h3>This Week</h3>
+
           ${groups.this_week.map(task => `
             <div class="upcoming-task">
               <span>${escapeHtml(task.title)}</span>
@@ -525,6 +512,7 @@ async function loadUpcomingTasks() {
       html += `
         <div class="upcoming-group">
           <h3>No Deadline</h3>
+
           ${groups.none.map(task => `
             <div class="upcoming-task">
               <span>${escapeHtml(task.title)}</span>
@@ -540,7 +528,10 @@ async function loadUpcomingTasks() {
     console.error("UPCOMING ERROR:", error);
 
     list.innerHTML = `
-      <p>Couldn't load upcoming tasks.</p>
+      <div class="upcoming-empty">
+        <p>Couldn't load upcoming tasks.</p>
+        <span>Please try again.</span>
+      </div>
     `;
   }
 }
