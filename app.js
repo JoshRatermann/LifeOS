@@ -44,7 +44,7 @@ async function getNextTask() {
         p_user_id: USER_ID,
         p_available_minutes:
           selectedAvailableMinutes || 30,
-        p_energy_level: "normal",
+        p_energy_level: selectedEnergyLevel,
         p_minimum_day: false
       }
     );
