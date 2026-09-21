@@ -551,7 +551,7 @@ document
   .querySelectorAll(".time-button")
   .forEach(button => {
 
-    button.addEventListener("click", () => {
+    button.addEventListener("click", async () => {
 
       document
         .querySelectorAll(".time-button")
@@ -561,13 +561,15 @@ document
 
       button.classList.add("selected");
 
-      const minutes =
+      selectedAvailableMinutes =
         Number(button.dataset.minutes);
 
       console.log(
         "Available minutes:",
-        minutes
+        selectedAvailableMinutes
       );
+
+      await getNextTask();
     });
 
   });
