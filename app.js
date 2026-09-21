@@ -4,7 +4,8 @@ const USER_ID = "7ddde65a-d770-4682-be2d-86ac7e4b2a52";
 
 let currentTask = null;
 let selectedDueDate = null;
-let selectedTimeHorizon = "none";
+let selectedTimeHorizon = "none"
+let selectedAvailableMinutes = 30;
 
 async function callSupabase(functionName, body) {
   const response = await fetch(
@@ -35,11 +36,13 @@ async function callSupabase(functionName, body) {
 
 async function getNextTask() {
   try {
+
     const result = await callSupabase(
       "get_next_task",
       {
         p_user_id: USER_ID,
-        p_available_minutes: 30,
+        p_available_minutes:
+          selectedAvailableMinutes || 30,
         p_energy_level: "normal",
         p_minimum_day: false
       }
@@ -65,6 +68,7 @@ async function getNextTask() {
       currentTask.reason || "";
 
   } catch (error) {
+
     console.error("GET NEXT TASK ERROR:", error);
 
     document.getElementById("task-title").textContent =
@@ -74,7 +78,6 @@ async function getNextTask() {
       error.message;
   }
 }
-
 
 function showNoTasks() {
   currentTask = null;
