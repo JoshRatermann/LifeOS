@@ -428,7 +428,7 @@ todayTab.addEventListener("click", () => {
   pageTitle.textContent = "What should I do?";
 });
 
-upcomingTab.addEventListener("click", () => {
+upcomingTab.addEventListener("click", async () => {
   upcomingTab.classList.add("active");
   todayTab.classList.remove("active");
 
@@ -438,4 +438,109 @@ upcomingTab.addEventListener("click", () => {
   upcomingView.classList.remove("hidden");
 
   pageTitle.textContent = "What's coming up";
+
+  await loadUpcomingTasks();
 });
+async function loadUpcomingTasks() {
+  const list = document.getElementById("upcoming-list");
+
+  list.innerHTML = "<p>Loading...</p>";
+
+  try {
+    const response = await fetch(
+      `${SUPABASE_URL}/rest/v1/tasks?user_id=eq.${USER_ID}&status=eq.open&order=due_date.asc`,
+      {
+        headers: {
+          apikey: SUPABASE_ANON_KEY,
+          Authorization: `Bearer ${SUPABASE_ANON_KEY}`
+        }
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Could not load upcoming tasks.");
+    }
+
+    const tasks = await response.json();
+
+    const upcomingTasks = tasks.filter(task => {
+      return (
+        task.time_horizon === "tomorrow" ||
+        task.time_horizon === "this_week" ||
+        task.time_horizon === "none"
+      );
+    });
+
+    if (upcomingTasks.length === 0) {
+      list.innerHTML = `
+        <div class="upcoming-empty">
+          <p>Nothing coming up.</p>
+          <span>You're caught up.</span>
+        </div>
+      `;
+      return;
+    }
+
+    const groups = {
+      tomorrow: [],
+      this_week: [],
+      none: []
+    };
+
+    upcomingTasks.forEach(task => {
+      if (groups[task.time_horizon]) {
+        groups[task.time_horizon].push(task);
+      }
+    });
+
+    let html = "";
+
+    if (groups.tomorrow.length > 0) {
+      html += `
+        <div class="upcoming-group">
+          <h3>Tomorrow</h3>
+          ${groups.tomorrow.map(task => `
+            <div class="upcoming-task">
+              <span>${escapeHtml(task.title)}</span>
+            </div>
+          `).join("")}
+        </div>
+      `;
+    }
+
+    if (groups.this_week.length > 0) {
+      html += `
+        <div class="upcoming-group">
+          <h3>This Week</h3>
+          ${groups.this_week.map(task => `
+            <div class="upcoming-task">
+              <span>${escapeHtml(task.title)}</span>
+            </div>
+          `).join("")}
+        </div>
+      `;
+    }
+
+    if (groups.none.length > 0) {
+      html += `
+        <div class="upcoming-group">
+          <h3>No Deadline</h3>
+          ${groups.none.map(task => `
+            <div class="upcoming-task">
+              <span>${escapeHtml(task.title)}</span>
+            </div>
+          `).join("")}
+        </div>
+      `;
+    }
+
+    list.innerHTML = html;
+
+  } catch (error) {
+    console.error("UPCOMING ERROR:", error);
+
+    list.innerHTML = `
+      <p>Couldn't load upcoming tasks.</p>
+    `;
+  }
+}
