@@ -411,6 +411,8 @@ getNextTask();
 
 // Today / Upcoming / Routines navigation
 
+// Today / Upcoming / Routines navigation
+
 const todayTab = document.getElementById("today-tab");
 const upcomingTab = document.getElementById("upcoming-tab");
 const routinesTab = document.getElementById("routines-tab");
@@ -427,12 +429,15 @@ todayTab.addEventListener("click", () => {
   upcomingTab.classList.remove("active");
   routinesTab.classList.remove("active");
 
-  todayView.classList.remove("hidden");
+  document.querySelector(".task-card").classList.remove("hidden");
+  document.querySelector(".add-button").classList.remove("hidden");
+
   upcomingView.classList.add("hidden");
   routinesView.classList.add("hidden");
 
   pageTitle.textContent = "What should I do?";
 });
+
 
 upcomingTab.addEventListener("click", async () => {
 
@@ -440,7 +445,9 @@ upcomingTab.addEventListener("click", async () => {
   todayTab.classList.remove("active");
   routinesTab.classList.remove("active");
 
-  todayView.classList.add("hidden");
+  document.querySelector(".task-card").classList.add("hidden");
+  document.querySelector(".add-button").classList.add("hidden");
+
   upcomingView.classList.remove("hidden");
   routinesView.classList.add("hidden");
 
@@ -449,13 +456,16 @@ upcomingTab.addEventListener("click", async () => {
   await loadUpcomingTasks();
 });
 
+
 routinesTab.addEventListener("click", async () => {
 
   routinesTab.classList.add("active");
   todayTab.classList.remove("active");
   upcomingTab.classList.remove("active");
 
-  todayView.classList.add("hidden");
+  document.querySelector(".task-card").classList.add("hidden");
+  document.querySelector(".add-button").classList.add("hidden");
+
   upcomingView.classList.add("hidden");
   routinesView.classList.remove("hidden");
 
