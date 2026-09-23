@@ -141,7 +141,60 @@
   <button id="back-to-today" class="cancel-button">
     ← Back to Today
   </button>
+<div id="routine-modal" class="modal hidden">
 
+  <div class="modal-card">
+
+    <h2>What should I keep up with?</h2>
+
+    <input
+      id="routine-title-input"
+      type="text"
+      placeholder="e.g. Clean the bathroom"
+      autocomplete="off"
+    >
+
+    <p class="due-label">How often should this happen?</p>
+
+    <div class="routine-frequency-options">
+
+      <button class="routine-frequency-button" data-frequency="daily">
+        Every day
+      </button>
+
+      <button class="routine-frequency-button" data-frequency="weekly">
+        Every week
+      </button>
+
+      <button class="routine-frequency-button" data-frequency="monthly">
+        Every month
+      </button>
+
+      <button class="routine-frequency-button" data-frequency="custom">
+        Every ___ days
+      </button>
+
+    </div>
+
+    <input
+      id="routine-interval-input"
+      type="number"
+      min="1"
+      placeholder="Number of days"
+      class="hidden"
+    >
+
+    <button id="save-routine-button" class="done-button">
+      Add routine
+    </button>
+
+    <button id="cancel-routine" class="cancel-button">
+      Never mind
+    </button>
+
+  </div>
+
+</div>
 </section>
 
 </section>
