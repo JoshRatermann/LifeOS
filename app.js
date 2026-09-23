@@ -409,12 +409,60 @@ document
 getNextTask();
 // Today / Upcoming navigation
 
+// Today / Upcoming / Routines navigation
+
 const todayTab = document.getElementById("today-tab");
 const upcomingTab = document.getElementById("upcoming-tab");
+const routinesTab = document.getElementById("routines-tab");
+
 const todayView = document.getElementById("today-view");
 const upcomingView = document.getElementById("upcoming-view");
+const routinesView = document.getElementById("routines-view");
+
 const pageTitle = document.getElementById("page-title");
 
+todayTab.addEventListener("click", () => {
+
+  todayTab.classList.add("active");
+  upcomingTab.classList.remove("active");
+  routinesTab.classList.remove("active");
+
+  todayView.classList.remove("hidden");
+  upcomingView.classList.add("hidden");
+  routinesView.classList.add("hidden");
+
+  pageTitle.textContent = "What should I do?";
+});
+
+upcomingTab.addEventListener("click", async () => {
+
+  upcomingTab.classList.add("active");
+  todayTab.classList.remove("active");
+  routinesTab.classList.remove("active");
+
+  todayView.classList.add("hidden");
+  upcomingView.classList.remove("hidden");
+  routinesView.classList.add("hidden");
+
+  pageTitle.textContent = "What's coming up";
+
+  await loadUpcomingTasks();
+});
+
+routinesTab.addEventListener("click", async () => {
+
+  routinesTab.classList.add("active");
+  todayTab.classList.remove("active");
+  upcomingTab.classList.remove("active");
+
+  todayView.classList.add("hidden");
+  upcomingView.classList.add("hidden");
+  routinesView.classList.remove("hidden");
+
+  pageTitle.textContent = "Routines";
+
+  await loadRoutines();
+});
 todayTab.addEventListener("click", () => {
   todayTab.classList.add("active");
   upcomingTab.classList.remove("active");
