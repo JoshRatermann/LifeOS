@@ -473,6 +473,22 @@ routinesTab.addEventListener("click", async () => {
 
   await loadRoutines();
 });
+
+
+// BACK TO TODAY BUTTON
+
+document
+  .getElementById("back-to-today")
+  .addEventListener("click", () => {
+
+    todayTab.click();
+
+  });
+
+
+// LOAD ROUTINES
+
+async function loadRoutines() {
 todayTab.addEventListener("click", () => {
   todayTab.classList.add("active");
   upcomingTab.classList.remove("active");
@@ -608,22 +624,23 @@ async function loadRoutines() {
 
   try {
 
-    const routines =
-      await callSupabase(
-        "get_recurring_tasks",
-        {
-          p_user_id: USER_ID
-        }
-      );
+    const routines = await callSupabase(
+      "get_recurring_tasks",
+      {
+        p_user_id: USER_ID
+      }
+    );
 
-    console.log("ROUTINES:", routines);
+    console.log("ROUTINES RESULT:", routines);
 
     if (!routines || routines.length === 0) {
 
       list.innerHTML = `
         <div class="upcoming-empty">
           <p>Nothing here yet.</p>
-          <span>Life Manager isn't keeping up with anything yet.</span>
+          <span>
+            Life Manager isn't keeping up with anything yet.
+          </span>
         </div>
       `;
 
@@ -637,16 +654,30 @@ async function loadRoutines() {
       let frequencyText = "";
 
       if (routine.frequency === "daily") {
+
         frequencyText = "Every day";
+
       } else if (routine.frequency === "weekly") {
+
         frequencyText = "Every week";
+
       } else if (routine.frequency === "monthly") {
+
         frequencyText = "Every month";
+
       } else if (routine.frequency === "yearly") {
+
         frequencyText = "Every year";
+
       } else if (routine.frequency === "custom") {
+
         frequencyText =
           `Every ${routine.interval_value} days`;
+
+      } else {
+
+        frequencyText = "Custom schedule";
+
       }
 
       html += `
@@ -655,6 +686,7 @@ async function loadRoutines() {
           <div>${frequencyText}</div>
         </div>
       `;
+
     });
 
     list.innerHTML = html;
@@ -666,12 +698,12 @@ async function loadRoutines() {
     list.innerHTML = `
       <div class="upcoming-empty">
         <p>Couldn't load routines.</p>
-        <span>Please try again.</span>
+        <span>${error.message}</span>
       </div>
     `;
+
   }
 }
-// Available time selection
 
 document
   .querySelectorAll(".time-button")
