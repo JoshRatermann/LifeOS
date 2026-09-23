@@ -4,9 +4,10 @@ const USER_ID = "7ddde65a-d770-4682-be2d-86ac7e4b2a52";
 
 let currentTask = null;
 let selectedDueDate = null;
-let selectedTimeHorizon = "none"
-let selectedAvailableMinutes = 30
+let selectedTimeHorizon = "none";
+let selectedAvailableMinutes = 30;
 let selectedEnergyLevel = "normal";
+
 
 async function callSupabase(functionName, body) {
   const response = await fetch(
@@ -90,6 +91,23 @@ async function getNextTask() {
 }
 
 
+function showNoTasks() {
+  currentTask = null;
+
+  document.getElementById("task-title").textContent =
+    "You're all caught up!";
+
+  document.getElementById("task-category").textContent =
+    "";
+
+  document.getElementById("task-time").textContent =
+    "";
+
+  document.getElementById("task-reason").textContent =
+    "Nothing needs your attention right now.";
+}
+
+
 // =========================
 // COMPLETE TASK
 // =========================
@@ -98,6 +116,7 @@ async function completeCurrentTask() {
   if (!currentTask) return;
 
   try {
+
     await callSupabase(
       "complete_task",
       {
@@ -109,8 +128,12 @@ async function completeCurrentTask() {
     await getNextTask();
 
   } catch (error) {
+
     console.error(error);
-    alert("I couldn't mark that task as complete.");
+
+    alert(
+      "I couldn't mark that task as complete."
+    );
   }
 }
 
@@ -139,14 +162,17 @@ async function skipCurrentTask(reason) {
   if (!currentTask) return;
 
   try {
+
     await callSupabase(
       "skip_task",
       {
         p_user_id: USER_ID,
         p_task_id: currentTask.task_id,
         p_reason: reason,
-        p_available_minutes: 30,
-        p_energy_level: "normal"
+        p_available_minutes:
+          selectedAvailableMinutes || 30,
+        p_energy_level:
+          selectedEnergyLevel || "normal"
       }
     );
 
@@ -155,8 +181,12 @@ async function skipCurrentTask(reason) {
     await getNextTask();
 
   } catch (error) {
+
     console.error(error);
-    alert("I couldn't reschedule that task.");
+
+    alert(
+      "I couldn't reschedule that task."
+    );
   }
 }
 
@@ -166,7 +196,8 @@ async function skipCurrentTask(reason) {
 // =========================
 
 function openAddModal() {
-  selectedDueDate = null
+
+  selectedDueDate = null;
   selectedTimeHorizon = null;
 
   document
@@ -186,6 +217,7 @@ function openAddModal() {
 
 
 function closeAddModal() {
+
   document
     .getElementById("add-modal")
     .classList.add("hidden");
@@ -195,10 +227,12 @@ function closeAddModal() {
     .value = "";
 
   selectedDueDate = null;
+  selectedTimeHorizon = null;
 }
 
 
 function formatDate(date) {
+
   const year = date.getFullYear();
 
   const month =
@@ -212,18 +246,25 @@ function formatDate(date) {
 
 
 function chooseDueDate(option) {
+
   const today = new Date();
 
   selectedDueDate = null;
   selectedTimeHorizon = "none";
 
   if (option === "today") {
-    selectedDueDate = formatDate(today);
-    selectedTimeHorizon = "today";
+
+    selectedDueDate =
+      formatDate(today);
+
+    selectedTimeHorizon =
+      "today";
   }
 
   if (option === "tomorrow") {
-    const tomorrow = new Date(today);
+
+    const tomorrow =
+      new Date(today);
 
     tomorrow.setDate(
       tomorrow.getDate() + 1
@@ -232,19 +273,25 @@ function chooseDueDate(option) {
     selectedDueDate =
       formatDate(tomorrow);
 
-    selectedTimeHorizon = "tomorrow";
+    selectedTimeHorizon =
+      "tomorrow";
   }
 
   if (option === "week") {
+
     selectedDueDate = null;
-    selectedTimeHorizon = "this_week";
+
+    selectedTimeHorizon =
+      "this_week";
   }
 
   if (option === "none") {
-    selectedDueDate = null;
-    selectedTimeHorizon = "none";
-  }
 
+    selectedDueDate = null;
+
+    selectedTimeHorizon =
+      "none";
+  }
 
   document
     .querySelectorAll(".due-button")
@@ -258,12 +305,16 @@ function chooseDueDate(option) {
     );
 
   if (selectedButton) {
-    selectedButton.classList.add("selected");
+
+    selectedButton.classList.add(
+      "selected"
+    );
   }
 }
 
 
 async function addNewTask() {
+
   const input =
     document.getElementById("new-task-input");
 
@@ -271,6 +322,7 @@ async function addNewTask() {
     input.value.trim();
 
   if (!title) {
+
     alert(
       "Tell me what needs to get done first."
     );
@@ -279,6 +331,7 @@ async function addNewTask() {
   }
 
   if (!selectedTimeHorizon) {
+
     alert(
       "Choose when this needs to be done."
     );
@@ -294,7 +347,8 @@ async function addNewTask() {
         p_user_id: USER_ID,
         p_title: title,
         p_due_date: selectedDueDate,
-       p_time_horizon: selectedTimeHorizon
+        p_time_horizon:
+          selectedTimeHorizon
       }
     );
 
@@ -315,6 +369,531 @@ async function addNewTask() {
     );
   }
 }
+
+
+// =========================
+// UPCOMING TASKS
+// =========================
+
+async function loadUpcomingTasks() {
+
+  const list =
+    document.getElementById(
+      "upcoming-list"
+    );
+
+  list.innerHTML =
+    "<p>Loading...</p>";
+
+  try {
+
+    const tasks =
+      await callSupabase(
+        "get_upcoming_tasks",
+        {
+          p_user_id: USER_ID
+        }
+      );
+
+    if (!tasks || tasks.length === 0) {
+
+      list.innerHTML = `
+        <div class="upcoming-empty">
+          <p>Nothing coming up.</p>
+          <span>You're caught up.</span>
+        </div>
+      `;
+
+      return;
+    }
+
+    const groups = {
+      tomorrow: [],
+      this_week: [],
+      none: []
+    };
+
+    tasks.forEach(task => {
+
+      if (groups[task.time_horizon]) {
+
+        groups[
+          task.time_horizon
+        ].push(task);
+      }
+
+    });
+
+    let html = "";
+
+
+    if (groups.tomorrow.length > 0) {
+
+      html += `
+        <div class="upcoming-group">
+          <h3>Tomorrow</h3>
+      `;
+
+      groups.tomorrow.forEach(task => {
+
+        html += `
+          <div class="upcoming-task">
+            <span>${task.title}</span>
+          </div>
+        `;
+
+      });
+
+      html += `</div>`;
+    }
+
+
+    if (groups.this_week.length > 0) {
+
+      html += `
+        <div class="upcoming-group">
+          <h3>This Week</h3>
+      `;
+
+      groups.this_week.forEach(task => {
+
+        html += `
+          <div class="upcoming-task">
+            <span>${task.title}</span>
+          </div>
+        `;
+
+      });
+
+      html += `</div>`;
+    }
+
+
+    if (groups.none.length > 0) {
+
+      html += `
+        <div class="upcoming-group">
+          <h3>No Deadline</h3>
+      `;
+
+      groups.none.forEach(task => {
+
+        html += `
+          <div class="upcoming-task">
+            <span>${task.title}</span>
+          </div>
+        `;
+
+      });
+
+      html += `</div>`;
+    }
+
+    list.innerHTML = html;
+
+  } catch (error) {
+
+    console.error(
+      "UPCOMING ERROR:",
+      error
+    );
+
+    list.innerHTML = `
+      <div class="upcoming-empty">
+        <p>Couldn't load upcoming tasks.</p>
+        <span>Please try again.</span>
+      </div>
+    `;
+  }
+}
+
+
+// =========================
+// ROUTINES
+// =========================
+
+async function loadRoutines() {
+
+  const list =
+    document.getElementById(
+      "routines-list"
+    );
+
+  list.innerHTML =
+    "<p>Loading...</p>";
+
+  try {
+
+    const routines =
+      await callSupabase(
+        "get_recurring_tasks",
+        {
+          p_user_id: USER_ID
+        }
+      );
+
+    console.log(
+      "ROUTINES RESULT:",
+      routines
+    );
+
+    if (!routines || routines.length === 0) {
+
+      list.innerHTML = `
+        <div class="upcoming-empty">
+          <p>Nothing here yet.</p>
+          <span>
+            Life Manager isn't keeping up
+            with anything yet.
+          </span>
+        </div>
+      `;
+
+      return;
+    }
+
+    let html = "";
+
+    routines.forEach(routine => {
+
+      let frequencyText = "";
+
+      if (routine.frequency === "daily") {
+
+        frequencyText =
+          "Every day";
+
+      } else if (
+        routine.frequency === "weekly"
+      ) {
+
+        frequencyText =
+          "Every week";
+
+      } else if (
+        routine.frequency === "monthly"
+      ) {
+
+        frequencyText =
+          "Every month";
+
+      } else if (
+        routine.frequency === "yearly"
+      ) {
+
+        frequencyText =
+          "Every year";
+
+      } else if (
+        routine.frequency === "custom"
+      ) {
+
+        frequencyText =
+          `Every ${routine.interval_value} days`;
+
+      } else {
+
+        frequencyText =
+          "Custom schedule";
+      }
+
+      html += `
+        <div class="upcoming-task">
+          <strong>${routine.title}</strong>
+          <div>${frequencyText}</div>
+        </div>
+      `;
+    });
+
+    list.innerHTML = html;
+
+  } catch (error) {
+
+    console.error(
+      "ROUTINES ERROR:",
+      error
+    );
+
+    list.innerHTML = `
+      <div class="upcoming-empty">
+        <p>Couldn't load routines.</p>
+        <span>${error.message}</span>
+      </div>
+    `;
+  }
+}
+
+
+// =========================
+// NAVIGATION
+// =========================
+
+const todayTab =
+  document.getElementById(
+    "today-tab"
+  );
+
+const upcomingTab =
+  document.getElementById(
+    "upcoming-tab"
+  );
+
+const routinesTab =
+  document.getElementById(
+    "routines-tab"
+  );
+
+const upcomingView =
+  document.getElementById(
+    "upcoming-view"
+  );
+
+const routinesView =
+  document.getElementById(
+    "routines-view"
+  );
+
+const pageTitle =
+  document.getElementById(
+    "page-title"
+  );
+
+
+todayTab.addEventListener(
+  "click",
+  () => {
+
+    todayTab.classList.add(
+      "active"
+    );
+
+    upcomingTab.classList.remove(
+      "active"
+    );
+
+    routinesTab.classList.remove(
+      "active"
+    );
+
+    document
+      .querySelector(".task-card")
+      .classList.remove(
+        "hidden"
+      );
+
+    document
+      .querySelector(".add-button")
+      .classList.remove(
+        "hidden"
+      );
+
+    upcomingView.classList.add(
+      "hidden"
+    );
+
+    routinesView.classList.add(
+      "hidden"
+    );
+
+    pageTitle.textContent =
+      "What should I do?";
+  }
+);
+
+
+upcomingTab.addEventListener(
+  "click",
+  async () => {
+
+    upcomingTab.classList.add(
+      "active"
+    );
+
+    todayTab.classList.remove(
+      "active"
+    );
+
+    routinesTab.classList.remove(
+      "active"
+    );
+
+    document
+      .querySelector(".task-card")
+      .classList.add(
+        "hidden"
+      );
+
+    document
+      .querySelector(".add-button")
+      .classList.add(
+        "hidden"
+      );
+
+    upcomingView.classList.remove(
+      "hidden"
+    );
+
+    routinesView.classList.add(
+      "hidden"
+    );
+
+    pageTitle.textContent =
+      "What's coming up";
+
+    await loadUpcomingTasks();
+  }
+);
+
+
+routinesTab.addEventListener(
+  "click",
+  async () => {
+
+    routinesTab.classList.add(
+      "active"
+    );
+
+    todayTab.classList.remove(
+      "active"
+    );
+
+    upcomingTab.classList.remove(
+      "active"
+    );
+
+    document
+      .querySelector(".task-card")
+      .classList.add(
+        "hidden"
+      );
+
+    document
+      .querySelector(".add-button")
+      .classList.add(
+        "hidden"
+      );
+
+    upcomingView.classList.add(
+      "hidden"
+    );
+
+    routinesView.classList.remove(
+      "hidden"
+    );
+
+    pageTitle.textContent =
+      "Routines";
+
+    await loadRoutines();
+  }
+);
+
+
+// =========================
+// BACK TO TODAY
+// =========================
+
+document
+  .getElementById(
+    "back-to-today"
+  )
+  .addEventListener(
+    "click",
+    () => {
+
+      todayTab.click();
+
+    }
+  );
+
+
+// =========================
+// TIME BUTTONS
+// =========================
+
+document
+  .querySelectorAll(".time-button")
+  .forEach(button => {
+
+    button.addEventListener(
+      "click",
+      async () => {
+
+        document
+          .querySelectorAll(
+            ".time-button"
+          )
+          .forEach(otherButton => {
+
+            otherButton.classList.remove(
+              "selected"
+            );
+
+          });
+
+        button.classList.add(
+          "selected"
+        );
+
+        selectedAvailableMinutes =
+          Number(
+            button.dataset.minutes
+          );
+
+        console.log(
+          "Available minutes:",
+          selectedAvailableMinutes
+        );
+
+        await getNextTask();
+      }
+    );
+
+  });
+
+
+// =========================
+// ENERGY BUTTONS
+// =========================
+
+document
+  .querySelectorAll(".energy-button")
+  .forEach(button => {
+
+    button.addEventListener(
+      "click",
+      async () => {
+
+        document
+          .querySelectorAll(
+            ".energy-button"
+          )
+          .forEach(otherButton => {
+
+            otherButton.classList.remove(
+              "selected"
+            );
+
+          });
+
+        button.classList.add(
+          "selected"
+        );
+
+        selectedEnergyLevel =
+          button.dataset.energy;
+
+        console.log(
+          "Energy level:",
+          selectedEnergyLevel
+        );
+
+        await getNextTask();
+      }
+    );
+
+  });
+
 
 // =========================
 // BUTTON CONNECTIONS
@@ -393,9 +972,11 @@ document
     button.addEventListener(
       "click",
       () => {
+
         chooseDueDate(
           button.dataset.due
         );
+
       }
     );
 
@@ -407,353 +988,3 @@ document
 // =========================
 
 getNextTask();
-// Today / Upcoming navigation
-
-// Today / Upcoming / Routines navigation
-
-// Today / Upcoming / Routines navigation
-
-const todayTab = document.getElementById("today-tab");
-const upcomingTab = document.getElementById("upcoming-tab");
-const routinesTab = document.getElementById("routines-tab");
-
-const todayView = document.getElementById("today-view");
-const upcomingView = document.getElementById("upcoming-view");
-const routinesView = document.getElementById("routines-view");
-
-const pageTitle = document.getElementById("page-title");
-
-todayTab.addEventListener("click", () => {
-
-  todayTab.classList.add("active");
-  upcomingTab.classList.remove("active");
-  routinesTab.classList.remove("active");
-
-  document.querySelector(".task-card").classList.remove("hidden");
-  document.querySelector(".add-button").classList.remove("hidden");
-
-  upcomingView.classList.add("hidden");
-  routinesView.classList.add("hidden");
-
-  pageTitle.textContent = "What should I do?";
-});
-
-
-upcomingTab.addEventListener("click", async () => {
-
-  upcomingTab.classList.add("active");
-  todayTab.classList.remove("active");
-  routinesTab.classList.remove("active");
-
-  document.querySelector(".task-card").classList.add("hidden");
-  document.querySelector(".add-button").classList.add("hidden");
-
-  upcomingView.classList.remove("hidden");
-  routinesView.classList.add("hidden");
-
-  pageTitle.textContent = "What's coming up";
-
-  await loadUpcomingTasks();
-});
-
-
-routinesTab.addEventListener("click", async () => {
-
-  routinesTab.classList.add("active");
-  todayTab.classList.remove("active");
-  upcomingTab.classList.remove("active");
-
-  document.querySelector(".task-card").classList.add("hidden");
-  document.querySelector(".add-button").classList.add("hidden");
-
-  upcomingView.classList.add("hidden");
-  routinesView.classList.remove("hidden");
-
-  pageTitle.textContent = "Routines";
-
-  await loadRoutines();
-});
-
-
-// BACK TO TODAY BUTTON
-
-document
-  .getElementById("back-to-today")
-  .addEventListener("click", () => {
-
-    todayTab.click();
-
-  });
-
-
-// LOAD ROUTINES
-
-async function loadRoutines() {
-todayTab.addEventListener("click", () => {
-  todayTab.classList.add("active");
-  upcomingTab.classList.remove("active");
-
-  document.querySelector(".task-card").classList.remove("hidden");
-  document.querySelector(".add-button").classList.remove("hidden");
-
-  upcomingView.classList.add("hidden");
-
-  pageTitle.textContent = "What should I do?";
-});
-
-upcomingTab.addEventListener("click", async () => {
-  upcomingTab.classList.add("active");
-  todayTab.classList.remove("active");
-
-  document.querySelector(".task-card").classList.add("hidden");
-  document.querySelector(".add-button").classList.add("hidden");
-
-  upcomingView.classList.remove("hidden");
-
-  pageTitle.textContent = "What's coming up";
-
-  await loadUpcomingTasks();
-});
-async function loadUpcomingTasks() {
-  const list = document.getElementById("upcoming-list");
-
-  list.innerHTML = "<p>Loading...</p>";
-
-  try {
-    const tasks = await callSupabase(
-      "get_upcoming_tasks",
-      {
-        p_user_id: USER_ID
-      }
-    );
-
-    if (!tasks || tasks.length === 0) {
-      list.innerHTML = `
-        <div class="upcoming-empty">
-          <p>Nothing coming up.</p>
-          <span>You're caught up.</span>
-        </div>
-      `;
-      return;
-    }
-
-    const groups = {
-      tomorrow: [],
-      this_week: [],
-      none: []
-    };
-
-    tasks.forEach(task => {
-      if (groups[task.time_horizon]) {
-        groups[task.time_horizon].push(task);
-      }
-    });
-
-    let html = "";
-
-    if (groups.tomorrow.length > 0) {
-      html += `
-        <div class="upcoming-group">
-          <h3>Tomorrow</h3>
-      `;
-
-      groups.tomorrow.forEach(task => {
-        html += `
-          <div class="upcoming-task">
-            <span>${task.title}</span>
-          </div>
-        `;
-      });
-
-      html += `</div>`;
-    }
-
-    if (groups.this_week.length > 0) {
-      html += `
-        <div class="upcoming-group">
-          <h3>This Week</h3>
-      `;
-
-      groups.this_week.forEach(task => {
-        html += `
-          <div class="upcoming-task">
-            <span>${task.title}</span>
-          </div>
-        `;
-      });
-
-      html += `</div>`;
-    }
-
-    if (groups.none.length > 0) {
-      html += `
-        <div class="upcoming-group">
-          <h3>No Deadline</h3>
-      `;
-
-      groups.none.forEach(task => {
-        html += `
-          <div class="upcoming-task">
-            <span>${task.title}</span>
-          </div>
-        `;
-      });
-
-      html += `</div>`;
-    }
-
-    list.innerHTML = html;
-
-  } catch (error) {
-    console.error("UPCOMING ERROR:", error);
-
-    list.innerHTML = `
-      <div class="upcoming-empty">
-        <p>Couldn't load upcoming tasks.</p>
-        <span>Please try again.</span>
-      </div>
-    `;
-  }
-}
-async function loadRoutines() {
-
-  const list =
-    document.getElementById("routines-list");
-
-  list.innerHTML = "<p>Loading...</p>";
-
-  try {
-
-    const routines = await callSupabase(
-      "get_recurring_tasks",
-      {
-        p_user_id: USER_ID
-      }
-    );
-
-    console.log("ROUTINES RESULT:", routines);
-
-    if (!routines || routines.length === 0) {
-
-      list.innerHTML = `
-        <div class="upcoming-empty">
-          <p>Nothing here yet.</p>
-          <span>
-            Life Manager isn't keeping up with anything yet.
-          </span>
-        </div>
-      `;
-
-      return;
-    }
-
-    let html = "";
-
-    routines.forEach(routine => {
-
-      let frequencyText = "";
-
-      if (routine.frequency === "daily") {
-
-        frequencyText = "Every day";
-
-      } else if (routine.frequency === "weekly") {
-
-        frequencyText = "Every week";
-
-      } else if (routine.frequency === "monthly") {
-
-        frequencyText = "Every month";
-
-      } else if (routine.frequency === "yearly") {
-
-        frequencyText = "Every year";
-
-      } else if (routine.frequency === "custom") {
-
-        frequencyText =
-          `Every ${routine.interval_value} days`;
-
-      } else {
-
-        frequencyText = "Custom schedule";
-
-      }
-
-      html += `
-        <div class="upcoming-task">
-          <strong>${routine.title}</strong>
-          <div>${frequencyText}</div>
-        </div>
-      `;
-
-    });
-
-    list.innerHTML = html;
-
-  } catch (error) {
-
-    console.error("ROUTINES ERROR:", error);
-
-    list.innerHTML = `
-      <div class="upcoming-empty">
-        <p>Couldn't load routines.</p>
-        <span>${error.message}</span>
-      </div>
-    `;
-
-  }
-}
-
-document
-  .querySelectorAll(".time-button")
-  .forEach(button => {
-
-    button.addEventListener("click", async () => {
-
-      document
-        .querySelectorAll(".time-button")
-        .forEach(otherButton => {
-          otherButton.classList.remove("selected");
-        });
-
-      button.classList.add("selected");
-
-      selectedAvailableMinutes =
-        Number(button.dataset.minutes);
-
-      console.log(
-        "Available minutes:",
-        selectedAvailableMinutes
-      );
-
-      await getNextTask();
-    });
-
-  });
-document
-  .querySelectorAll(".energy-button")
-  .forEach(button => {
-
-    button.addEventListener("click", async () => {
-
-      document
-        .querySelectorAll(".energy-button")
-        .forEach(otherButton => {
-          otherButton.classList.remove("selected");
-        });
-
-      button.classList.add("selected");
-
-      selectedEnergyLevel =
-        button.dataset.energy;
-
-      console.log(
-        "Energy level:",
-        selectedEnergyLevel
-      );
-
-      await getNextTask();
-    });
-
-  });
