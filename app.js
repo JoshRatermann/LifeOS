@@ -589,6 +589,78 @@ async function loadUpcomingTasks() {
     `;
   }
 }
+async function loadRoutines() {
+
+  const list =
+    document.getElementById("routines-list");
+
+  list.innerHTML = "<p>Loading...</p>";
+
+  try {
+
+    const routines =
+      await callSupabase(
+        "get_recurring_tasks",
+        {
+          p_user_id: USER_ID
+        }
+      );
+
+    console.log("ROUTINES:", routines);
+
+    if (!routines || routines.length === 0) {
+
+      list.innerHTML = `
+        <div class="upcoming-empty">
+          <p>Nothing here yet.</p>
+          <span>Life Manager isn't keeping up with anything yet.</span>
+        </div>
+      `;
+
+      return;
+    }
+
+    let html = "";
+
+    routines.forEach(routine => {
+
+      let frequencyText = "";
+
+      if (routine.frequency === "daily") {
+        frequencyText = "Every day";
+      } else if (routine.frequency === "weekly") {
+        frequencyText = "Every week";
+      } else if (routine.frequency === "monthly") {
+        frequencyText = "Every month";
+      } else if (routine.frequency === "yearly") {
+        frequencyText = "Every year";
+      } else if (routine.frequency === "custom") {
+        frequencyText =
+          `Every ${routine.interval_value} days`;
+      }
+
+      html += `
+        <div class="upcoming-task">
+          <strong>${routine.title}</strong>
+          <div>${frequencyText}</div>
+        </div>
+      `;
+    });
+
+    list.innerHTML = html;
+
+  } catch (error) {
+
+    console.error("ROUTINES ERROR:", error);
+
+    list.innerHTML = `
+      <div class="upcoming-empty">
+        <p>Couldn't load routines.</p>
+        <span>Please try again.</span>
+      </div>
+    `;
+  }
+}
 // Available time selection
 
 document
