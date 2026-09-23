@@ -986,5 +986,7 @@ document
 // =========================
 // START
 // =========================
-
+document.getElementById("add-routine-button").addEventListener("click", () => {
+  alert("Add Routine clicked!");
+});
 getNextTask();
