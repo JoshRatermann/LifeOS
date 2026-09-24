@@ -1234,6 +1234,10 @@ document
   });
 
 
+// =========================
+// SAVE ROUTINE
+// =========================
+
 document
   .getElementById("save-routine-button")
   .addEventListener(
@@ -1263,18 +1267,15 @@ document
       const title =
         titleInput.value.trim();
 
-      if (!title) {
-
+      // A new routine needs a title.
+      // An existing routine already has one.
       if (!title && !currentRoutine) {
 
-  alert(
-    "Tell me what you want Life Manager to keep up with."
-  );
+        alert(
+          "Tell me what you want Life Manager to keep up with."
+        );
 
-  titleInput.focus();
-
-  return;
-}
+        titleInput.focus();
 
         return;
       }
@@ -1333,37 +1334,45 @@ document
 
       try {
 
-       if (currentRoutine) {
+        // EDIT EXISTING ROUTINE
+        if (currentRoutine) {
 
-  await callSupabase(
-    "update_recurring_task",
-    {
-      p_user_id: USER_ID,
-      p_recurring_id:
-        currentRoutine.recurring_id,
-      p_frequency: frequency,
-      p_interval_value: intervalValue,
-      p_duration_minutes:
-        durationMinutes
-    }
-  );
+          await callSupabase(
+            "update_recurring_task",
+            {
+              p_user_id: USER_ID,
+              p_recurring_id:
+                currentRoutine.recurring_id,
+              p_frequency: frequency,
+              p_interval_value:
+                intervalValue,
+              p_duration_minutes:
+                durationMinutes
+            }
+          );
 
-} else {
+        }
 
-  await callSupabase(
-    "add_recurring_task",
-    {
-      p_user_id: USER_ID,
-      p_title: title,
-      p_frequency: frequency,
-      p_interval_value: intervalValue,
-      p_duration_minutes:
-        durationMinutes
-    }
-  );
+        // ADD NEW ROUTINE
+        else {
 
-}
-currentRoutine = null;
+          await callSupabase(
+            "add_recurring_task",
+            {
+              p_user_id: USER_ID,
+              p_title: title,
+              p_frequency: frequency,
+              p_interval_value:
+                intervalValue,
+              p_duration_minutes:
+                durationMinutes
+            }
+          );
+
+        }
+
+        currentRoutine = null;
+
         titleInput.value = "";
         intervalInput.value = "";
 
@@ -1372,7 +1381,9 @@ currentRoutine = null;
             ".routine-frequency-button"
           )
           .forEach(btn =>
-            btn.classList.remove("selected")
+            btn.classList.remove(
+              "selected"
+            )
           );
 
         document
@@ -1380,7 +1391,9 @@ currentRoutine = null;
             ".routine-time-button"
           )
           .forEach(btn =>
-            btn.classList.remove("selected")
+            btn.classList.remove(
+              "selected"
+            )
           );
 
         intervalInput.classList.add(
@@ -1388,20 +1401,24 @@ currentRoutine = null;
         );
 
         document
-          .getElementById("routine-modal")
-          .classList.add("hidden");
+          .getElementById(
+            "routine-modal"
+          )
+          .classList.add(
+            "hidden"
+          );
 
         await loadRoutines();
 
       } catch (error) {
 
         console.error(
-          "ADD ROUTINE ERROR:",
+          "SAVE ROUTINE ERROR:",
           error
         );
 
         alert(
-          "Couldn't add this routine: " +
+          "Couldn't save this routine: " +
           error.message
         );
 
@@ -1409,7 +1426,6 @@ currentRoutine = null;
 
     }
   );
-
 
 getNextTask();
 
