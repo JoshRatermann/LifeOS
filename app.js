@@ -1307,17 +1307,36 @@ document
 
       try {
 
-        await callSupabase(
-          "add_recurring_task",
-          {
-            p_user_id: USER_ID,
-            p_title: title,
-            p_frequency: frequency,
-            p_interval_value: intervalValue,
-            p_duration_minutes:
-              durationMinutes
-          }
-        );
+       if (currentRoutine) {
+
+  await callSupabase(
+    "update_recurring_task",
+    {
+      p_user_id: USER_ID,
+      p_recurring_id:
+        currentRoutine.recurring_id,
+      p_frequency: frequency,
+      p_interval_value: intervalValue,
+      p_duration_minutes:
+        durationMinutes
+    }
+  );
+
+} else {
+
+  await callSupabase(
+    "add_recurring_task",
+    {
+      p_user_id: USER_ID,
+      p_title: title,
+      p_frequency: frequency,
+      p_interval_value: intervalValue,
+      p_duration_minutes:
+        durationMinutes
+    }
+  );
+
+}
 
         titleInput.value = "";
         intervalInput.value = "";
