@@ -822,7 +822,87 @@ document
 // =========================
 // TIME BUTTONS
 // =========================
+// =========================
+// EDIT ROUTINE
+// =========================
 
+document
+  .getElementById(
+    "edit-routine-button"
+  )
+  .addEventListener(
+    "click",
+    () => {
+
+      if (!currentRoutine) {
+        return;
+      }
+
+      const frequency =
+        currentRoutine.frequency;
+
+      const duration =
+        currentRoutine.duration_minutes;
+
+      const interval =
+        currentRoutine.interval_value;
+
+      const frequencyButton =
+        document.querySelector(
+          `.routine-frequency-button[data-frequency="${frequency}"]`
+        );
+
+      const timeButton =
+        document.querySelector(
+          `.routine-time-button[data-minutes="${duration}"]`
+        );
+
+      if (frequencyButton) {
+        frequencyButton.classList.add(
+          "selected"
+        );
+      }
+
+      if (timeButton) {
+        timeButton.classList.add(
+          "selected"
+        );
+      }
+
+      const intervalInput =
+        document.getElementById(
+          "routine-interval-input"
+        );
+
+      if (frequency === "custom") {
+
+        intervalInput.value =
+          interval || "";
+
+        intervalInput.classList.remove(
+          "hidden"
+        );
+
+      } else {
+
+        intervalInput.value = "";
+
+        intervalInput.classList.add(
+          "hidden"
+        );
+
+      }
+
+      document
+        .getElementById(
+          "routine-modal"
+        )
+        .classList.remove(
+          "hidden"
+        );
+
+    }
+  );
 // =========================
 // BACK TO ROUTINES
 // =========================
