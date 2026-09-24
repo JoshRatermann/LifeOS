@@ -7,7 +7,7 @@ let selectedDueDate = null;
 let selectedTimeHorizon = "none";
 let selectedAvailableMinutes = 30;
 let selectedEnergyLevel = "normal";
-
+let currentRoutine = null;
 
 async function callSupabase(functionName, body) {
   const response = await fetch(
@@ -601,7 +601,7 @@ async function loadRoutines() {
         if (!routine) {
           return;
         }
-
+currentRoutine = routine;
         document
           .getElementById("manage-routine-title")
           .textContent = routine.title;
@@ -802,7 +802,6 @@ routinesTab.addEventListener(
   }
 );
 
-
 // =========================
 // BACK TO TODAY
 // =========================
@@ -819,76 +818,6 @@ document
 
     }
   );
-// =========================
-// BACK TO TODAY
-// =========================
-
-document
-  .getElementById(
-    "back-to-today"
-  )
-  .addEventListener(
-    "click",
-    () => {
-
-      todayTab.click();
-
-    }
-  );
-// =========================
-// BACK TO TODAY
-// =========================
-
-document
-  .getElementById(
-    "back-to-today"
-  )
-  .addEventListener(
-    "click",
-    () => {
-
-      todayTab.click();
-
-    }
-  );
-
-
-// =========================
-// BACK TO ROUTINES
-// =========================
-
-document
-  .getElementById(
-    "back-to-routines"
-  )
-  .addEventListener(
-    "click",
-    () => {
-
-      document
-        .getElementById(
-          "routine-management-view"
-        )
-        .classList.add("hidden");
-
-      document
-        .getElementById(
-          "routines-view"
-        )
-        .classList.remove("hidden");
-
-      pageTitle.textContent =
-        "Routines";
-
-      routinesTab.classList.add("active");
-      todayTab.classList.remove("active");
-      upcomingTab.classList.remove("active");
-
-      loadRoutines();
-
-    }
-  );
-
 
 // =========================
 // TIME BUTTONS
