@@ -141,6 +141,9 @@
   <button id="back-to-today" class="cancel-button">
     ← Back to Today
   </button>
+
+</section>
+
 <div id="routine-modal" class="modal hidden">
 
   <div class="modal-card">
@@ -176,69 +179,43 @@
 
     </div>
 
-  <div class="upcoming-header">
-    <h2 id="manage-routine-title">Routine</h2>
-    <p id="manage-routine-details"></p>
-  </div>
+    <input
+      id="routine-interval-input"
+      type="number"
+      min="1"
+      placeholder="Number of days"
+      class="hidden"
+    >
 
-  <div class="routine-management-options">
+    <p class="due-label">About how long does this usually take?</p>
 
-    <button id="edit-routine-button" class="time-button">
-      Edit routine
+    <div class="routine-time-options">
+
+      <button class="routine-time-button" data-minutes="5">
+        5 min
+      </button>
+
+      <button class="routine-time-button" data-minutes="15">
+        15 min
+      </button>
+
+      <button class="routine-time-button" data-minutes="30">
+        30 min
+      </button>
+
+      <button class="routine-time-button" data-minutes="60">
+        1 hour
+      </button>
+
+      <button class="routine-time-button" data-minutes="120">
+        A while
+      </button>
+
+    </div>
+
+    <button id="save-routine-button" class="done-button">
+      Add routine
     </button>
-
-    <button id="pause-routine-button" class="time-button">
-      Pause routine
-    </button>
-
-    <button id="delete-routine-button" class="time-button">
-      Delete routine
-    </button>
-
-  </div>
-
-  <button id="back-to-routines" class="cancel-button">
-    ← Back to Routines
-  </button>
-
-</div>
-   <input
-  id="routine-interval-input"
-  type="number"
-  min="1"
-  placeholder="Number of days"
-  class="hidden"
->
-
-<p class="due-label">About how long does this usually take?</p>
-
-<div class="routine-time-options">
-
-  <button class="routine-time-button" data-minutes="5">
-    5 min
-  </button>
-
-  <button class="routine-time-button" data-minutes="15">
-    15 min
-  </button>
-
-  <button class="routine-time-button" data-minutes="30">
-    30 min
-  </button>
-
-  <button class="routine-time-button" data-minutes="60">
-    1 hour
-  </button>
-
-  <button class="routine-time-button" data-minutes="120">
-    A while
-  </button>
-
-</div>
-
-<button id="save-routine-button" class="done-button">
-  Add routine
-</button>
 
     <button id="cancel-routine" class="cancel-button">
       Never mind
@@ -247,7 +224,8 @@
   </div>
 
 </div>
-  <div id="routine-management-view" class="hidden">
+
+<div id="routine-management-view" class="hidden">
 
   <div class="upcoming-header">
     <h2 id="manage-routine-title">Routine</h2>
@@ -275,47 +253,3 @@
   </button>
 
 </div>
-</section>
-
-</section>
-  <div id="upcoming-list"></div>
-</section>
-
-  <div id="skip-modal" class="modal hidden">
-
-    <div class="modal-card">
-
-      <h2>Why are you skipping this?</h2>
-
-      <button class="reason-button" data-reason="too_tired">
-        😴 I'm too tired
-      </button>
-
-      <button class="reason-button" data-reason="not_enough_time">
-        ⏱️ I don't have enough time
-      </button>
-
-      <button class="reason-button" data-reason="something_came_up">
-        🚨 Something came up
-      </button>
-
-      <button class="reason-button" data-reason="cant_do_right_now">
-        🙅 I can't do this right now
-      </button>
-
-      <button class="reason-button" data-reason="dont_feel_like_it">
-        😑 I don't feel like it
-      </button>
-
-      <button id="cancel-skip" class="cancel-button">
-        Never mind
-      </button>
-
-    </div>
-
-  </div>
-
-  <script src="app.js"></script>
-
-</body>
-</html>
