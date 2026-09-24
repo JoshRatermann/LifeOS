@@ -1074,15 +1074,16 @@ const durationMinutes =
 
   try {
 
-    await callSupabase(
-      "add_recurring_task",
-      {
-        p_user_id: USER_ID,
-        p_title: title,
-        p_frequency: frequency,
-        p_interval_value: intervalValue
-      }
-    );
+   await callSupabase(
+  "add_recurring_task",
+  {
+    p_user_id: USER_ID,
+    p_title: title,
+    p_frequency: frequency,
+    p_interval_value: intervalValue,
+    p_duration_minutes: durationMinutes
+  }
+);
 
     titleInput.value = "";
     intervalInput.value = "";
@@ -1090,7 +1091,9 @@ const durationMinutes =
     document
       .querySelectorAll(".routine-frequency-button")
       .forEach(btn => btn.classList.remove("selected"));
-
+document
+  .querySelectorAll(".routine-time-button")
+  .forEach(btn => btn.classList.remove("selected"));
     intervalInput.classList.add("hidden");
 
     document
