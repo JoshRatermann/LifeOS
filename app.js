@@ -513,32 +513,18 @@ async function loadUpcomingTasks() {
 // =========================
 
 async function loadRoutines() {
-
-  const list =
-    document.getElementById(
-      "routines-list"
-    );
-
-  list.innerHTML =
-    "<p>Loading...</p>";
+  const list = document.getElementById("routines-list");
+  list.innerHTML = "<p>Loading...</p>";
 
   try {
-
-    const routines =
-      await callSupabase(
-        "get_recurring_tasks",
-        {
-          p_user_id: USER_ID
-        }
-      );
-
-    console.log(
-      "ROUTINES RESULT:",
-      routines
+    const routines = await callSupabase(
+      "get_recurring_tasks",
+      { p_user_id: USER_ID }
     );
 
-    if (!routines || routines.length === 0) {
+    console.log("ROUTINES RESULT:", routines);
 
+    if (!routines || routines.length === 0) {
       list.innerHTML = `
         <div class="upcoming-empty">
           <p>Nothing here yet.</p>
@@ -548,55 +534,50 @@ async function loadRoutines() {
           </span>
         </div>
       `;
-
       return;
     }
 
     let html = "";
 
-   routines.forEach(routine => {
-  let frequencyText = "";
+    routines.forEach(routine => {
+      let frequencyText = "";
 
-  if (routine.frequency === "daily") {
-    frequencyText = "Every day";
-  } else if (routine.frequency === "weekly") {
-    frequencyText = "Every week";
-  } else if (routine.frequency === "monthly") {
-    frequencyText = "Every month";
-  } else if (routine.frequency === "yearly") {
-    frequencyText = "Every year";
-  } else if (routine.frequency === "custom") {
-    frequencyText = `Every ${routine.interval_value} days`;
-  } else {
-    frequencyText = "Custom schedule";
-  }
+      if (routine.frequency === "daily") {
+        frequencyText = "Every day";
+      } else if (routine.frequency === "weekly") {
+        frequencyText = "Every week";
+      } else if (routine.frequency === "monthly") {
+        frequencyText = "Every month";
+      } else if (routine.frequency === "yearly") {
+        frequencyText = "Every year";
+      } else if (routine.frequency === "custom") {
+        frequencyText = `Every ${routine.interval_value} days`;
+      } else {
+        frequencyText = "Custom schedule";
+      }
 
-  const durationText =
-    routine.duration_minutes === 60
-      ? "About 1 hour"
-      : routine.duration_minutes > 60
-        ? "About a while"
-        : `About ${routine.duration_minutes} min`;
+      let durationText = "";
 
-  const nextDue = new Date(routine.next_due_at);
+      if (routine.duration_minutes === 60) {
+        durationText = "About 1 hour";
+      } else if (routine.duration_minutes > 60) {
+        durationText = "About a while";
+      } else {
+        durationText = `About ${routine.duration_minutes} min`;
+      }
 
-  const nextDueText = nextDue.toLocaleDateString(undefined, {
-    month: "long",
-    day: "numeric"
-  });
+      const nextDue = new Date(routine.next_due_at);
 
-  html += `
-    <div class="upcoming-task">
-      <strong>${routine.title}</strong>
-      <div>${frequencyText} · ${durationText}</div>
-      <div>Next: ${nextDueText}</div>
-    </div>
-  `;
-});
+      const nextDueText = nextDue.toLocaleDateString(undefined, {
+        month: "long",
+        day: "numeric"
+      });
+
       html += `
         <div class="upcoming-task">
           <strong>${routine.title}</strong>
-          <div>${frequencyText}</div>
+          <div>${frequencyText} · ${durationText}</div>
+          <div>Next: ${nextDueText}</div>
         </div>
       `;
     });
@@ -604,11 +585,7 @@ async function loadRoutines() {
     list.innerHTML = html;
 
   } catch (error) {
-
-    console.error(
-      "ROUTINES ERROR:",
-      error
-    );
+    console.error("ROUTINES ERROR:", error);
 
     list.innerHTML = `
       <div class="upcoming-empty">
@@ -618,7 +595,6 @@ async function loadRoutines() {
     `;
   }
 }
-
 
 // =========================
 // NAVIGATION
