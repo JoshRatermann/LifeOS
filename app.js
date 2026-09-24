@@ -987,6 +987,9 @@ document
 // START
 // =========================
 document.getElementById("add-routine-button").addEventListener("click", () => {
-  alert("Add Routine clicked!");
+  document.getElementById("routine-modal").classList.remove("hidden");
 });
-getNextTask();
+
+document.getElementById("cancel-routine").addEventListener("click", () => {
+  document.getElementById("routine-modal").classList.add("hidden");
+});
