@@ -955,127 +955,248 @@ document
 // =========================
 // START
 // =========================
-document.getElementById("add-routine-button").addEventListener("click", () => {
-  document.getElementById("routine-modal").classList.remove("hidden");
-});
+// =========================
+// START
+// =========================
 
-document.getElementById("cancel-routine").addEventListener("click", () => {
-  document.getElementById("routine-modal").classList.add("hidden");
-});
-
-document.querySelectorAll(".routine-frequency-button").forEach(button => {
-  button.addEventListener("click", () => {
-
-    document
-      .querySelectorAll(".routine-frequency-button")
-      .forEach(btn => btn.classList.remove("selected"));
-
-    button.classList.add("selected");
-
-    const frequency = button.dataset.frequency;
-
-    const intervalInput =
-      document.getElementById("routine-interval-input");
-
-    if (frequency === "custom") {
-      intervalInput.classList.remove("hidden");
-      intervalInput.focus();
-    } else {
-      intervalInput.classList.add("hidden");
-      intervalInput.value = "";
-    }
-  });
-});
-document.querySelectorAll(".routine-time-button").forEach(button => {
-  button.addEventListener("click", () => {
-
-    document
-      .querySelectorAll(".routine-time-button")
-      .forEach(btn => btn.classList.remove("selected"));
-
-    button.classList.add("selected");
-  });
-});
-document.getElementById("save-routine-button").addEventListener("click", async () => {
-
-  const titleInput =
-    document.getElementById("routine-title-input");
-
-  const selectedFrequency =
-    document.querySelector(".routine-frequency-button.selected");
-
-  const intervalInput =
-    document.getElementById("routine-interval-input");
-const selectedTime =
-  document.querySelector(".routine-time-button.selected");
-  
-  const title = titleInput.value.trim();
-
-  if (!title) {
-    alert("Tell me what you want Life Manager to keep up with.");
-    titleInput.focus();
-    return;
-  }
-
-  if (!selectedFrequency) {
-    alert("Choose how often this should happen.");
-    return;
-  }
-if (!selectedTime) {
-  alert("Choose about how long this usually takes.");
-  return;
-}
-  
-  const frequency = selectedFrequency.dataset.frequency;
-const durationMinutes =
-  parseInt(selectedTime.dataset.minutes, 10);
-  let intervalValue = null;
-
-  if (frequency === "custom") {
-    intervalValue = parseInt(intervalInput.value, 10);
-
-    if (!intervalValue || intervalValue < 1) {
-      alert("Enter the number of days.");
-      intervalInput.focus();
-      return;
-    }
-  }
-
-  try {
-
-   await callSupabase(
-  "add_recurring_task",
-  {
-    p_user_id: USER_ID,
-    p_title: title,
-    p_frequency: frequency,
-    p_interval_value: intervalValue,
-    p_duration_minutes: durationMinutes
-  }
-);
-
-    titleInput.value = "";
-    intervalInput.value = "";
-
-    document
-      .querySelectorAll(".routine-frequency-button")
-      .forEach(btn => btn.classList.remove("selected"));
 document
-  .querySelectorAll(".routine-time-button")
-  .forEach(btn => btn.classList.remove("selected"));
-    intervalInput.classList.add("hidden");
+  .getElementById("add-routine-button")
+  .addEventListener("click", () => {
+
+    document
+      .getElementById("routine-modal")
+      .classList.remove("hidden");
+
+  });
+
+
+document
+  .getElementById("cancel-routine")
+  .addEventListener("click", () => {
 
     document
       .getElementById("routine-modal")
       .classList.add("hidden");
 
-    await loadRoutines();
+  });
 
-  } catch (error) {
 
-    console.error("ADD ROUTINE ERROR:", error);
+document
+  .querySelectorAll(".routine-frequency-button")
+  .forEach(button => {
 
-    alert("Couldn't add this routine: " + error.message);
-  }
-});
+    button.addEventListener("click", () => {
+
+      document
+        .querySelectorAll(".routine-frequency-button")
+        .forEach(btn =>
+          btn.classList.remove("selected")
+        );
+
+      button.classList.add("selected");
+
+      const frequency =
+        button.dataset.frequency;
+
+      const intervalInput =
+        document.getElementById(
+          "routine-interval-input"
+        );
+
+      if (frequency === "custom") {
+
+        intervalInput.classList.remove(
+          "hidden"
+        );
+
+        intervalInput.focus();
+
+      } else {
+
+        intervalInput.classList.add(
+          "hidden"
+        );
+
+        intervalInput.value = "";
+
+      }
+
+    });
+
+  });
+
+
+document
+  .querySelectorAll(".routine-time-button")
+  .forEach(button => {
+
+    button.addEventListener("click", () => {
+
+      document
+        .querySelectorAll(".routine-time-button")
+        .forEach(btn =>
+          btn.classList.remove("selected")
+        );
+
+      button.classList.add("selected");
+
+    });
+
+  });
+
+
+document
+  .getElementById("save-routine-button")
+  .addEventListener(
+    "click",
+    async () => {
+
+      const titleInput =
+        document.getElementById(
+          "routine-title-input"
+        );
+
+      const selectedFrequency =
+        document.querySelector(
+          ".routine-frequency-button.selected"
+        );
+
+      const intervalInput =
+        document.getElementById(
+          "routine-interval-input"
+        );
+
+      const selectedTime =
+        document.querySelector(
+          ".routine-time-button.selected"
+        );
+
+      const title =
+        titleInput.value.trim();
+
+      if (!title) {
+
+        alert(
+          "Tell me what you want Life Manager to keep up with."
+        );
+
+        titleInput.focus();
+
+        return;
+      }
+
+      if (!selectedFrequency) {
+
+        alert(
+          "Choose how often this should happen."
+        );
+
+        return;
+      }
+
+      if (!selectedTime) {
+
+        alert(
+          "Choose about how long this usually takes."
+        );
+
+        return;
+      }
+
+      const frequency =
+        selectedFrequency.dataset.frequency;
+
+      const durationMinutes =
+        parseInt(
+          selectedTime.dataset.minutes,
+          10
+        );
+
+      let intervalValue = null;
+
+      if (frequency === "custom") {
+
+        intervalValue =
+          parseInt(
+            intervalInput.value,
+            10
+          );
+
+        if (
+          !intervalValue ||
+          intervalValue < 1
+        ) {
+
+          alert(
+            "Enter the number of days."
+          );
+
+          intervalInput.focus();
+
+          return;
+        }
+      }
+
+      try {
+
+        await callSupabase(
+          "add_recurring_task",
+          {
+            p_user_id: USER_ID,
+            p_title: title,
+            p_frequency: frequency,
+            p_interval_value: intervalValue,
+            p_duration_minutes:
+              durationMinutes
+          }
+        );
+
+        titleInput.value = "";
+        intervalInput.value = "";
+
+        document
+          .querySelectorAll(
+            ".routine-frequency-button"
+          )
+          .forEach(btn =>
+            btn.classList.remove("selected")
+          );
+
+        document
+          .querySelectorAll(
+            ".routine-time-button"
+          )
+          .forEach(btn =>
+            btn.classList.remove("selected")
+          );
+
+        intervalInput.classList.add(
+          "hidden"
+        );
+
+        document
+          .getElementById("routine-modal")
+          .classList.add("hidden");
+
+        await loadRoutines();
+
+      } catch (error) {
+
+        console.error(
+          "ADD ROUTINE ERROR:",
+          error
+        );
+
+        alert(
+          "Couldn't add this routine: " +
+          error.message
+        );
+
+      }
+
+    }
+  );
+
+
+getNextTask();
 getNextTask();
