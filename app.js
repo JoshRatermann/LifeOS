@@ -835,7 +835,64 @@ document
 
     }
   );
+// =========================
+// BACK TO TODAY
+// =========================
 
+document
+  .getElementById(
+    "back-to-today"
+  )
+  .addEventListener(
+    "click",
+    () => {
+
+      todayTab.click();
+
+    }
+  );
+
+
+// =========================
+// BACK TO ROUTINES
+// =========================
+
+document
+  .getElementById(
+    "back-to-routines"
+  )
+  .addEventListener(
+    "click",
+    () => {
+
+      document
+        .getElementById(
+          "routine-management-view"
+        )
+        .classList.add("hidden");
+
+      document
+        .getElementById(
+          "routines-view"
+        )
+        .classList.remove("hidden");
+
+      pageTitle.textContent =
+        "Routines";
+
+      routinesTab.classList.add("active");
+      todayTab.classList.remove("active");
+      upcomingTab.classList.remove("active");
+
+      loadRoutines();
+
+    }
+  );
+
+
+// =========================
+// TIME BUTTONS
+// =========================
 
 // =========================
 // BACK TO ROUTINES
