@@ -1,255 +1,602 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
   <title>Life Manager</title>
+
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-<main class="app" id="today-view">
 
-  <header class="header">
-    <div>
-     <div class="nav-tabs">
-  <button id="today-tab" class="nav-tab active">TODAY</button>
-  <button id="upcoming-tab" class="nav-tab">UPCOMING</button>
-  <button id="routines-tab" class="nav-tab">ROUTINES</button>
-</div>
+  <main class="app">
 
-      <h1 id="page-title">What should I do?</h1>
-    </div>
-  </header>
+    <!-- PAGE HEADER -->
 
-    <section class="task-card">
+    <header class="app-header">
 
-      <div class="task-icon">🧠</div>
+      <h1 id="page-title">
+        What should I do?
+      </h1>
 
-      <p class="task-label">YOUR NEXT TASK</p>
+      <nav class="main-nav">
 
-      <h2 id="task-title">Loading...</h2>
+        <button
+          id="today-tab"
+          class="nav-tab active"
+        >
+          Today
+        </button>
 
-      <div class="task-details">
-        <span id="task-category">—</span>
-        <span id="task-time">—</span>
-      </div>
+        <button
+          id="upcoming-tab"
+          class="nav-tab"
+        >
+          Upcoming
+        </button>
 
-      <p id="task-reason" class="task-reason"></p>
-<div class="time-check">
-  <p>How much time do you have right now?</p>
+        <button
+          id="routines-tab"
+          class="nav-tab"
+        >
+          Routines
+        </button>
 
-  <div class="time-options">
-    <button class="time-button" data-minutes="5">5 min</button>
-    <button class="time-button" data-minutes="15">15 min</button>
-    <button class="time-button" data-minutes="30">30 min</button>
-    <button class="time-button" data-minutes="60">1 hour</button>
-    <button class="time-button" data-minutes="120">A while</button>
-  </div>
-</div>
-      <div class="energy-check">
-  <p>How's your energy right now?</p>
+      </nav>
 
-  <div class="energy-options">
-    <button class="energy-button" data-energy="low">
-      😴 Low
-    </button>
+    </header>
 
-    <button class="energy-button" data-energy="normal">
-      🙂 Normal
-    </button>
 
-    <button class="energy-button" data-energy="high">
-      ⚡ High
-    </button>
-  </div>
-</div>
-      <button id="done-button" class="done-button">
-        ✓ Done
-      </button>
+    <!-- TODAY -->
 
-      <button id="skip-button" class="skip-button">
-        Skip →
+    <section id="today-view">
+
+      <section class="task-card">
+
+        <div class="task-info">
+
+          <h2 id="task-title">
+            Loading...
+          </h2>
+
+          <p id="task-category"></p>
+
+          <p id="task-time"></p>
+
+          <p id="task-reason"></p>
+
+        </div>
+
+
+        <!-- AVAILABLE TIME -->
+
+        <div class="time-check">
+
+          <p>
+            How much time do you have?
+          </p>
+
+          <div class="time-options">
+
+            <button
+              class="time-button"
+              data-minutes="5"
+            >
+              5 min
+            </button>
+
+            <button
+              class="time-button"
+              data-minutes="15"
+            >
+              15 min
+            </button>
+
+            <button
+              class="time-button"
+              data-minutes="30"
+            >
+              30 min
+            </button>
+
+            <button
+              class="time-button"
+              data-minutes="60"
+            >
+              1 hour
+            </button>
+
+            <button
+              class="time-button"
+              data-minutes="120"
+            >
+              A while
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <!-- ENERGY -->
+
+        <div class="energy-check">
+
+          <p>
+            How's your energy?
+          </p>
+
+          <div class="energy-options">
+
+            <button
+              class="energy-button"
+              data-energy="low"
+            >
+              Low
+            </button>
+
+            <button
+              class="energy-button selected"
+              data-energy="normal"
+            >
+              Normal
+            </button>
+
+            <button
+              class="energy-button"
+              data-energy="high"
+            >
+              High
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <!-- TASK ACTIONS -->
+
+        <div class="task-actions">
+
+          <button
+            id="done-button"
+            class="done-button"
+          >
+            Done
+          </button>
+
+          <button
+            id="skip-button"
+            class="cancel-button"
+          >
+            Skip
+          </button>
+
+        </div>
+
+      </section>
+
+
+      <!-- ADD TASK -->
+
+      <button
+        id="add-task-button"
+        class="add-button"
+      >
+        + Add task
       </button>
 
     </section>
 
-    <button id="add-button" class="add-button">+ Add something</button>
 
-<div id="add-modal" class="modal hidden">
-  <div class="modal-card">
-    <h2>What needs to get done?</h2>
+    <!-- UPCOMING -->
 
-    <input
-      id="new-task-input"
-      type="text"
-      placeholder="e.g. Clean the bathroom"
-      autocomplete="off"
-    >
-
-    <p class="due-label">When does this need to be done?</p>
-
-    <button class="due-button" data-due="today">
-      Today
-    </button>
-
-    <button class="due-button" data-due="tomorrow">
-      Tomorrow
-    </button>
-
-    <button class="due-button" data-due="week">
-      This week
-    </button>
-
-    <button class="due-button" data-due="none">
-      No deadline
-    </button>
-
-    <button id="save-task-button" class="done-button">
-      Add task
-    </button>
-
-    <button id="cancel-add" class="cancel-button">
-      Never mind
-    </button>
-  </div>
-</div>
-   </main>
-
-<section id="upcoming-view" class="hidden">
-  <div class="upcoming-header">
-    <h2>What's coming up</h2>
-    <p>These are things you don't need to worry about yet.</p>
-  </div>
-
-  <div id="upcoming-list"></div>
-</section>
-
-<section id="routines-view" class="hidden">
-
-  <div class="upcoming-header">
-    <h2>Things Life Manager keeps up with</h2>
-    <p>You tell me how often. I'll handle the rest.</p>
-  </div>
-
-  <div id="routines-list"></div>
-
-  <button id="add-routine-button" class="add-button">
-    + Add something
-  </button>
-
-  <button id="back-to-today" class="cancel-button">
-    ← Back to Today
-  </button>
-
-</section>
-
-<div id="routine-modal" class="modal hidden">
-
-  <div class="modal-card">
-
-    <h2>What should I keep up with?</h2>
-
-    <input
-      id="routine-title-input"
-      type="text"
-      placeholder="e.g. Clean the bathroom"
-      autocomplete="off"
-    >
-
-    <p class="due-label">How often should this happen?</p>
-
-    <div class="routine-frequency-options">
-
-      <button class="routine-frequency-button" data-frequency="daily">
-        Every day
-      </button>
-
-      <button class="routine-frequency-button" data-frequency="weekly">
-        Every week
-      </button>
-
-      <button class="routine-frequency-button" data-frequency="monthly">
-        Every month
-      </button>
-
-      <button class="routine-frequency-button" data-frequency="custom">
-        Every ___ days
-      </button>
-
-    </div>
-
-    <input
-      id="routine-interval-input"
-      type="number"
-      min="1"
-      placeholder="Number of days"
+    <section
+      id="upcoming-view"
       class="hidden"
     >
 
-    <p class="due-label">About how long does this usually take?</p>
+      <div class="upcoming-header">
 
-    <div class="routine-time-options">
+        <h2>
+          What's coming up
+        </h2>
 
-      <button class="routine-time-button" data-minutes="5">
-        5 min
+        <p>
+          These are things you don't need to worry about yet.
+        </p>
+
+      </div>
+
+      <div id="upcoming-list"></div>
+
+    </section>
+
+
+    <!-- ROUTINES -->
+
+    <section
+      id="routines-view"
+      class="hidden"
+    >
+
+      <div class="upcoming-header">
+
+        <h2>
+          Things Life Manager keeps up with
+        </h2>
+
+        <p>
+          You tell me how often. I'll handle the rest.
+        </p>
+
+      </div>
+
+      <div id="routines-list"></div>
+
+      <button
+        id="add-routine-button"
+        class="add-button"
+      >
+        + Add something
       </button>
 
-      <button class="routine-time-button" data-minutes="15">
-        15 min
+      <button
+        id="back-to-today"
+        class="cancel-button"
+      >
+        ← Back to Today
       </button>
 
-      <button class="routine-time-button" data-minutes="30">
-        30 min
-      </button>
+    </section>
 
-      <button class="routine-time-button" data-minutes="60">
-        1 hour
-      </button>
 
-      <button class="routine-time-button" data-minutes="120">
-        A while
+    <!-- ADD ROUTINE MODAL -->
+
+    <div
+      id="routine-modal"
+      class="modal hidden"
+    >
+
+      <div class="modal-card">
+
+        <h2>
+          What should I keep up with?
+        </h2>
+
+
+        <input
+          id="routine-title-input"
+          type="text"
+          placeholder="e.g. Clean the bathroom"
+          autocomplete="off"
+        >
+
+
+        <p class="due-label">
+          How often should this happen?
+        </p>
+
+
+        <div class="routine-frequency-options">
+
+          <button
+            class="routine-frequency-button"
+            data-frequency="daily"
+          >
+            Every day
+          </button>
+
+          <button
+            class="routine-frequency-button"
+            data-frequency="weekly"
+          >
+            Every week
+          </button>
+
+          <button
+            class="routine-frequency-button"
+            data-frequency="monthly"
+          >
+            Every month
+          </button>
+
+          <button
+            class="routine-frequency-button"
+            data-frequency="custom"
+          >
+            Every ___ days
+          </button>
+
+        </div>
+
+
+        <input
+          id="routine-interval-input"
+          type="number"
+          min="1"
+          placeholder="Number of days"
+          class="hidden"
+        >
+
+
+        <p class="due-label">
+          About how long does this usually take?
+        </p>
+
+
+        <div class="routine-time-options">
+
+          <button
+            class="routine-time-button"
+            data-minutes="5"
+          >
+            5 min
+          </button>
+
+          <button
+            class="routine-time-button"
+            data-minutes="15"
+          >
+            15 min
+          </button>
+
+          <button
+            class="routine-time-button"
+            data-minutes="30"
+          >
+            30 min
+          </button>
+
+          <button
+            class="routine-time-button"
+            data-minutes="60"
+          >
+            1 hour
+          </button>
+
+          <button
+            class="routine-time-button"
+            data-minutes="120"
+          >
+            A while
+          </button>
+
+        </div>
+
+
+        <button
+          id="save-routine-button"
+          class="done-button"
+        >
+          Add routine
+        </button>
+
+
+        <button
+          id="cancel-routine"
+          class="cancel-button"
+        >
+          Never mind
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- ROUTINE MANAGEMENT -->
+
+    <div
+      id="routine-management-view"
+      class="hidden"
+    >
+
+      <div class="upcoming-header">
+
+        <h2 id="manage-routine-title">
+          Routine
+        </h2>
+
+        <p id="manage-routine-details"></p>
+
+      </div>
+
+
+      <div class="routine-management-options">
+
+        <button
+          id="edit-routine-button"
+          class="time-button"
+        >
+          Edit routine
+        </button>
+
+        <button
+          id="pause-routine-button"
+          class="time-button"
+        >
+          Pause routine
+        </button>
+
+        <button
+          id="delete-routine-button"
+          class="time-button"
+        >
+          Delete routine
+        </button>
+
+      </div>
+
+
+      <button
+        id="back-to-routines"
+        class="cancel-button"
+      >
+        ← Back to Routines
       </button>
 
     </div>
 
-    <button id="save-routine-button" class="done-button">
-      Add routine
-    </button>
 
-    <button id="cancel-routine" class="cancel-button">
-      Never mind
-    </button>
+    <!-- ADD TASK MODAL -->
 
-  </div>
+    <div
+      id="add-task-modal"
+      class="modal hidden"
+    >
 
-</div>
+      <div class="modal-card">
 
-<div id="routine-management-view" class="hidden">
+        <h2>
+          What needs to happen?
+        </h2>
 
-  <div class="upcoming-header">
-    <h2 id="manage-routine-title">Routine</h2>
-    <p id="manage-routine-details"></p>
-  </div>
 
-  <div class="routine-management-options">
+        <input
+          id="task-title-input"
+          type="text"
+          placeholder="e.g. Pay electric bill"
+          autocomplete="off"
+        >
 
-    <button id="edit-routine-button" class="time-button">
-      Edit routine
-    </button>
 
-    <button id="pause-routine-button" class="time-button">
-      Pause routine
-    </button>
+        <p class="due-label">
+          When does this need to happen?
+        </p>
 
-    <button id="delete-routine-button" class="time-button">
-      Delete routine
-    </button>
 
-  </div>
+        <div class="due-options">
 
-  <button id="back-to-routines" class="cancel-button">
-    ← Back to Routines
-  </button>
+          <button
+            class="due-button"
+            data-due="today"
+          >
+            Today
+          </button>
 
-</div>
+          <button
+            class="due-button"
+            data-due="tomorrow"
+          >
+            Tomorrow
+          </button>
+
+          <button
+            class="due-button"
+            data-due="this_week"
+          >
+            This week
+          </button>
+
+          <button
+            class="due-button"
+            data-due="none"
+          >
+            No deadline
+          </button>
+
+        </div>
+
+
+        <button
+          id="save-task-button"
+          class="done-button"
+        >
+          Add task
+        </button>
+
+
+        <button
+          id="cancel-task"
+          class="cancel-button"
+        >
+          Never mind
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- SKIP MODAL -->
+
+    <div
+      id="skip-modal"
+      class="modal hidden"
+    >
+
+      <div class="modal-card">
+
+        <h2>
+          Why are you skipping this?
+        </h2>
+
+
+        <button
+          class="reason-button"
+          data-reason="too_tired"
+        >
+          😴 I'm too tired
+        </button>
+
+
+        <button
+          class="reason-button"
+          data-reason="not_enough_time"
+        >
+          ⏱️ I don't have enough time
+        </button>
+
+
+        <button
+          class="reason-button"
+          data-reason="something_came_up"
+        >
+          🚨 Something came up
+        </button>
+
+
+        <button
+          class="reason-button"
+          data-reason="cant_do_right_now"
+        >
+          🙅 I can't do this right now
+        </button>
+
+
+        <button
+          class="reason-button"
+          data-reason="dont_feel_like_it"
+        >
+          😑 I don't feel like it
+        </button>
+
+
+        <button
+          id="cancel-skip"
+          class="cancel-button"
+        >
+          Never mind
+        </button>
+
+      </div>
+
+    </div>
+
+
+  </main>
+
+
+  <script src="app.js"></script>
+
+</body>
+
+</html>
