@@ -1123,8 +1123,8 @@ document
 // START
 // =========================
 
-document 
-  .getElementById("add-routine-button") 
+document
+  .getElementById("add-routine-button")
   .addEventListener("click", () => {
 
     currentRoutine = null;
@@ -1153,12 +1153,11 @@ document
       .getElementById("routine-interval-input")
       .classList.add("hidden");
 
-    document 
-      .getElementById("routine-modal") 
-      .classList.remove("hidden"); 
- 
-  });
+    document
+      .getElementById("routine-modal")
+      .classList.remove("hidden");
 
+  });
 
 document
   .getElementById("cancel-routine")
