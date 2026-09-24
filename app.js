@@ -904,6 +904,79 @@ document
     }
   );
 // =========================
+// PAUSE ROUTINE
+// =========================
+
+document
+  .getElementById("pause-routine-button")
+  .addEventListener(
+    "click",
+    async () => {
+
+      if (!currentRoutine) {
+        return;
+      }
+
+      const confirmed =
+        confirm(
+          `Pause "${currentRoutine.title}"? Life Manager won't generate new tasks from this routine while it's paused.`
+        );
+
+      if (!confirmed) {
+        return;
+      }
+
+      try {
+
+        await callSupabase(
+          "pause_recurring_task",
+          {
+            p_user_id: USER_ID,
+            p_recurring_id:
+              currentRoutine.recurring_id
+          }
+        );
+
+        currentRoutine = null;
+
+        document
+          .getElementById(
+            "routine-management-view"
+          )
+          .classList.add("hidden");
+
+        document
+          .getElementById(
+            "routines-view"
+          )
+          .classList.remove("hidden");
+
+        pageTitle.textContent =
+          "Routines";
+
+        routinesTab.classList.add("active");
+        todayTab.classList.remove("active");
+        upcomingTab.classList.remove("active");
+
+        await loadRoutines();
+
+      } catch (error) {
+
+        console.error(
+          "PAUSE ROUTINE ERROR:",
+          error
+        );
+
+        alert(
+          "Couldn't pause this routine: " +
+          error.message
+        );
+
+      }
+
+    }
+  );
+// =========================
 // BACK TO ROUTINES
 // =========================
 
