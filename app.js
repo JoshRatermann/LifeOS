@@ -1337,7 +1337,7 @@ document
   );
 
 }
-
+currentRoutine = null;
         titleInput.value = "";
         intervalInput.value = "";
 
