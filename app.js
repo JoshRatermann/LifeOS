@@ -593,6 +593,17 @@ document.querySelectorAll(".routine-card").forEach(card => {
     alert("You selected routine: " + routineId);
   });
 });
+      } catch (error) {
+    console.error("ROUTINES ERROR:", error);
+
+    list.innerHTML = `
+      <div class="upcoming-empty">
+        <p>Couldn't load routines.</p>
+        <span>${error.message}</span>
+      </div>
+    `;
+  }
+}
 // =========================
 // NAVIGATION
 // =========================
