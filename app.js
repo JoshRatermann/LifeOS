@@ -1017,7 +1017,16 @@ document.querySelectorAll(".routine-frequency-button").forEach(button => {
     }
   });
 });
+document.querySelectorAll(".routine-time-button").forEach(button => {
+  button.addEventListener("click", () => {
 
+    document
+      .querySelectorAll(".routine-time-button")
+      .forEach(btn => btn.classList.remove("selected"));
+
+    button.classList.add("selected");
+  });
+});
 document.getElementById("save-routine-button").addEventListener("click", async () => {
 
   const titleInput =
