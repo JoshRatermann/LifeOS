@@ -554,49 +554,45 @@ async function loadRoutines() {
 
     let html = "";
 
-    routines.forEach(routine => {
+   routines.forEach(routine => {
+  let frequencyText = "";
 
-      let frequencyText = "";
+  if (routine.frequency === "daily") {
+    frequencyText = "Every day";
+  } else if (routine.frequency === "weekly") {
+    frequencyText = "Every week";
+  } else if (routine.frequency === "monthly") {
+    frequencyText = "Every month";
+  } else if (routine.frequency === "yearly") {
+    frequencyText = "Every year";
+  } else if (routine.frequency === "custom") {
+    frequencyText = `Every ${routine.interval_value} days`;
+  } else {
+    frequencyText = "Custom schedule";
+  }
 
-      if (routine.frequency === "daily") {
+  const durationText =
+    routine.duration_minutes === 60
+      ? "About 1 hour"
+      : routine.duration_minutes > 60
+        ? "About a while"
+        : `About ${routine.duration_minutes} min`;
 
-        frequencyText =
-          "Every day";
+  const nextDue = new Date(routine.next_due_at);
 
-      } else if (
-        routine.frequency === "weekly"
-      ) {
+  const nextDueText = nextDue.toLocaleDateString(undefined, {
+    month: "long",
+    day: "numeric"
+  });
 
-        frequencyText =
-          "Every week";
-
-      } else if (
-        routine.frequency === "monthly"
-      ) {
-
-        frequencyText =
-          "Every month";
-
-      } else if (
-        routine.frequency === "yearly"
-      ) {
-
-        frequencyText =
-          "Every year";
-
-      } else if (
-        routine.frequency === "custom"
-      ) {
-
-        frequencyText =
-          `Every ${routine.interval_value} days`;
-
-      } else {
-
-        frequencyText =
-          "Custom schedule";
-      }
-
+  html += `
+    <div class="upcoming-task">
+      <strong>${routine.title}</strong>
+      <div>${frequencyText} · ${durationText}</div>
+      <div>Next: ${nextDueText}</div>
+    </div>
+  `;
+});
       html += `
         <div class="upcoming-task">
           <strong>${routine.title}</strong>
