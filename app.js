@@ -1159,8 +1159,6 @@ document
  
   });
 
-  });
-
 
 document
   .getElementById("cancel-routine")
