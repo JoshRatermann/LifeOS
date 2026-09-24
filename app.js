@@ -993,3 +993,5 @@ document.getElementById("add-routine-button").addEventListener("click", () => {
 document.getElementById("cancel-routine").addEventListener("click", () => {
   document.getElementById("routine-modal").classList.add("hidden");
 });
+
+getNextTask();
