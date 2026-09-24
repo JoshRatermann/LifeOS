@@ -904,7 +904,7 @@ document
     }
   );
 // =========================
-// PAUSE ROUTINE
+// PAUSE / RESUME ROUTINE
 // =========================
 
 document
@@ -917,9 +917,17 @@ document
         return;
       }
 
+      const isPaused =
+        currentRoutine.active === false;
+
+      const actionText =
+        isPaused
+          ? "resume"
+          : "pause";
+
       const confirmed =
         confirm(
-          `Pause "${currentRoutine.title}"? Life Manager won't generate new tasks from this routine while it's paused.`
+          `${isPaused ? "Resume" : "Pause"} "${currentRoutine.title}"?`
         );
 
       if (!confirmed) {
@@ -928,14 +936,29 @@ document
 
       try {
 
-        await callSupabase(
-          "pause_recurring_task",
-          {
-            p_user_id: USER_ID,
-            p_recurring_id:
-              currentRoutine.recurring_id
-          }
-        );
+        if (isPaused) {
+
+          await callSupabase(
+            "resume_recurring_task",
+            {
+              p_user_id: USER_ID,
+              p_recurring_id:
+                currentRoutine.recurring_id
+            }
+          );
+
+        } else {
+
+          await callSupabase(
+            "pause_recurring_task",
+            {
+              p_user_id: USER_ID,
+              p_recurring_id:
+                currentRoutine.recurring_id
+            }
+          );
+
+        }
 
         currentRoutine = null;
 
@@ -963,12 +986,12 @@ document
       } catch (error) {
 
         console.error(
-          "PAUSE ROUTINE ERROR:",
+          `${actionText.toUpperCase()} ROUTINE ERROR:`,
           error
         );
 
         alert(
-          "Couldn't pause this routine: " +
+          `Couldn't ${actionText} this routine: ` +
           error.message
         );
 
