@@ -1037,7 +1037,9 @@ document.getElementById("save-routine-button").addEventListener("click", async (
 
   const intervalInput =
     document.getElementById("routine-interval-input");
-
+const selectedTime =
+  document.querySelector(".routine-time-button.selected");
+  
   const title = titleInput.value.trim();
 
   if (!title) {
@@ -1050,9 +1052,14 @@ document.getElementById("save-routine-button").addEventListener("click", async (
     alert("Choose how often this should happen.");
     return;
   }
-
+if (!selectedTime) {
+  alert("Choose about how long this usually takes.");
+  return;
+}
+  
   const frequency = selectedFrequency.dataset.frequency;
-
+const durationMinutes =
+  parseInt(selectedTime.dataset.minutes, 10);
   let intervalValue = null;
 
   if (frequency === "custom") {
