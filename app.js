@@ -1119,21 +1119,45 @@ document
 
   });
 
-
-// =========================
-// START
-// =========================
 // =========================
 // START
 // =========================
 
-document
-  .getElementById("add-routine-button")
+document 
+  .getElementById("add-routine-button") 
   .addEventListener("click", () => {
 
+    currentRoutine = null;
+
     document
-      .getElementById("routine-modal")
-      .classList.remove("hidden");
+      .getElementById("routine-title-input")
+      .value = "";
+
+    document
+      .getElementById("routine-interval-input")
+      .value = "";
+
+    document
+      .querySelectorAll(".routine-frequency-button")
+      .forEach(button => {
+        button.classList.remove("selected");
+      });
+
+    document
+      .querySelectorAll(".routine-time-button")
+      .forEach(button => {
+        button.classList.remove("selected");
+      });
+
+    document
+      .getElementById("routine-interval-input")
+      .classList.add("hidden");
+
+    document 
+      .getElementById("routine-modal") 
+      .classList.remove("hidden"); 
+ 
+  });
 
   });
 
