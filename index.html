@@ -176,17 +176,43 @@
 
     </div>
 
-    <input
-      id="routine-interval-input"
-      type="number"
-      min="1"
-      placeholder="Number of days"
-      class="hidden"
-    >
+   <input
+  id="routine-interval-input"
+  type="number"
+  min="1"
+  placeholder="Number of days"
+  class="hidden"
+>
 
-    <button id="save-routine-button" class="done-button">
-      Add routine
-    </button>
+<p class="due-label">About how long does this usually take?</p>
+
+<div class="routine-time-options">
+
+  <button class="routine-time-button" data-minutes="5">
+    5 min
+  </button>
+
+  <button class="routine-time-button" data-minutes="15">
+    15 min
+  </button>
+
+  <button class="routine-time-button" data-minutes="30">
+    30 min
+  </button>
+
+  <button class="routine-time-button" data-minutes="60">
+    1 hour
+  </button>
+
+  <button class="routine-time-button" data-minutes="120">
+    A while
+  </button>
+
+</div>
+
+<button id="save-routine-button" class="done-button">
+  Add routine
+</button>
 
     <button id="cancel-routine" class="cancel-button">
       Never mind
