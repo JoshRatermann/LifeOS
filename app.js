@@ -1244,11 +1244,16 @@ document
 
       if (!title) {
 
-        alert(
-          "Tell me what you want Life Manager to keep up with."
-        );
+      if (!title && !currentRoutine) {
 
-        titleInput.focus();
+  alert(
+    "Tell me what you want Life Manager to keep up with."
+  );
+
+  titleInput.focus();
+
+  return;
+}
 
         return;
       }
