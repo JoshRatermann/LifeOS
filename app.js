@@ -590,20 +590,63 @@ document.querySelectorAll(".routine-card").forEach(card => {
   card.addEventListener("click", () => {
     const routineId = card.dataset.routineId;
 
-    alert("You selected routine: " + routineId);
+    const routine = routines.find(
+      item => item.recurring_id === routineId
+    );
+
+    if (!routine) {
+      return;
+    }
+
+    document.getElementById("manage-routine-title").textContent =
+      routine.title;
+
+    const frequencyText =
+      routine.frequency === "custom"
+        ? `Every ${routine.interval_value} days`
+        : routine.frequency === "daily"
+          ? "Every day"
+          : routine.frequency === "weekly"
+            ? "Every week"
+            : routine.frequency === "monthly"
+              ? "Every month"
+              : "Every year";
+
+    const durationText =
+      routine.duration_minutes === 60
+        ? "About 1 hour"
+        : routine.duration_minutes > 60
+          ? "About a while"
+          : `About ${routine.duration_minutes} min`;
+
+    const nextDue = new Date(routine.next_due_at);
+
+    const nextDueText = nextDue.toLocaleDateString(undefined, {
+      month: "long",
+      day: "numeric"
+    });
+
+    document.getElementById("manage-routine-details").textContent =
+      `${frequencyText} · ${durationText} · Next: ${nextDueText}`;
+
+    document
+      .getElementById("routines-view")
+      .classList.add("hidden");
+
+    document
+      .getElementById("routine-management-view")
+      .classList.remove("hidden");
   });
 });
-  } catch (error) {
-    console.error("ROUTINES ERROR:", error);
+    document.getElementById("back-to-routines").addEventListener("click", () => {
+  document
+    .getElementById("routine-management-view")
+    .classList.add("hidden");
 
-    list.innerHTML = `
-      <div class="upcoming-empty">
-        <p>Couldn't load routines.</p>
-        <span>${error.message}</span>
-      </div>
-    `;
-  }
-}
+  document
+    .getElementById("routines-view")
+    .classList.remove("hidden");
+});
 
 // =========================
 // NAVIGATION
