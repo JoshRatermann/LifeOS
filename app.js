@@ -586,7 +586,13 @@ async function loadRoutines() {
     });
 
     list.innerHTML = html;
+document.querySelectorAll(".routine-card").forEach(card => {
+  card.addEventListener("click", () => {
+    const routineId = card.dataset.routineId;
 
+    alert("You selected routine: " + routineId);
+  });
+});
   } catch (error) {
     console.error("ROUTINES ERROR:", error);
 
