@@ -588,22 +588,43 @@ async function loadRoutines() {
     list.innerHTML = html;
 document.querySelectorAll(".routine-card").forEach(card => {
   card.addEventListener("click", () => {
-    const routineId = card.dataset.routineId;
 
-    alert("You selected routine: " + routineId);
+    const routineId =
+      card.dataset.routineId;
+
+    const routine =
+      routines.find(
+        item =>
+          item.recurring_id === routineId
+      );
+
+    if (!routine) {
+      return;
+    }
+
+    document
+      .getElementById("manage-routine-title")
+      .textContent = routine.title;
+
+    document
+      .getElementById("manage-routine-details")
+      .textContent =
+        `Every ${
+          routine.interval_value
+        } days · About ${
+          routine.duration_minutes
+        } min`;
+
+    document
+      .getElementById("routines-view")
+      .classList.add("hidden");
+
+    document
+      .getElementById("routine-management-view")
+      .classList.remove("hidden");
+
   });
 });
-      } catch (error) {
-    console.error("ROUTINES ERROR:", error);
-
-    list.innerHTML = `
-      <div class="upcoming-empty">
-        <p>Couldn't load routines.</p>
-        <span>${error.message}</span>
-      </div>
-    `;
-  }
-}
 // =========================
 // NAVIGATION
 // =========================
