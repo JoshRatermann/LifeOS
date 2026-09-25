@@ -448,82 +448,134 @@
 
     <!-- ADD TASK MODAL -->
 
-    <div
-      id="add-task-modal"
-      class="modal hidden"
+   <div id="add-task-modal" class="modal hidden">
+  <div class="modal-card">
+
+    <h2>What needs to happen?</h2>
+
+    <input
+      id="task-title-input"
+      type="text"
+      placeholder="e.g. Pay electric bill"
+      autocomplete="off"
     >
 
-      <div class="modal-card">
+    <p class="due-label">
+      When does this need to happen?
+    </p>
 
-        <h2>
-          What needs to happen?
-        </h2>
+    <div class="due-options">
 
+      <button
+        class="due-button"
+        data-due="today"
+      >
+        Today
+      </button>
 
-        <input
-          id="task-title-input"
-          type="text"
-          placeholder="e.g. Pay electric bill"
-          autocomplete="off"
-        >
+      <button
+        class="due-button"
+        data-due="tomorrow"
+      >
+        Tomorrow
+      </button>
 
+      <button
+        class="due-button"
+        data-due="this_week"
+      >
+        This week
+      </button>
 
-        <p class="due-label">
-          When does this need to happen?
-        </p>
-
-
-        <div class="due-options">
-
-          <button
-            class="due-button"
-            data-due="today"
-          >
-            Today
-          </button>
-
-          <button
-            class="due-button"
-            data-due="tomorrow"
-          >
-            Tomorrow
-          </button>
-
-          <button
-            class="due-button"
-            data-due="this_week"
-          >
-            This week
-          </button>
-
-          <button
-            class="due-button"
-            data-due="none"
-          >
-            No deadline
-          </button>
-
-        </div>
-
-
-        <button
-          id="save-task-button"
-          class="done-button"
-        >
-          Add task
-        </button>
-
-
-        <button
-          id="cancel-add"
-          class="cancel-button"
-        >
-          Never mind
-        </button>
-
-      </div>
+      <button
+        class="due-button"
+        data-due="none"
+      >
+        No deadline
+      </button>
 
     </div>
+
+    <p class="due-label">
+      About how long will this take?
+    </p>
+
+    <div class="task-duration-options">
+
+      <button
+        class="task-duration-button"
+        data-minutes="5"
+      >
+        5 min
+      </button>
+
+      <button
+        class="task-duration-button"
+        data-minutes="10"
+      >
+        10 min
+      </button>
+
+      <button
+        class="task-duration-button"
+        data-minutes="15"
+      >
+        15 min
+      </button>
+
+      <button
+        class="task-duration-button"
+        data-minutes="30"
+      >
+        30 min
+      </button>
+
+      <button
+        class="task-duration-button"
+        data-minutes="45"
+      >
+        45 min
+      </button>
+
+      <button
+        class="task-duration-button"
+        data-minutes="60"
+      >
+        1 hr
+      </button>
+
+      <button
+        class="task-duration-button"
+        data-minutes="90"
+      >
+        90 min
+      </button>
+
+      <button
+        class="task-duration-button"
+        data-minutes="120"
+      >
+        2+ hrs
+      </button>
+
+    </div>
+
+    <button
+      id="save-task-button"
+      class="done-button"
+    >
+      Add task
+    </button>
+
+    <button
+      id="cancel-add"
+      class="cancel-button"
+    >
+      Never mind
+    </button>
+
+  </div>
+</div>
 
 
     <!-- SKIP MODAL -->
