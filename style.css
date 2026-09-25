@@ -285,3 +285,9 @@ h1 {
   color: white;
   border-color: #222;
 }
+.routine-paused {
+  margin-top: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
