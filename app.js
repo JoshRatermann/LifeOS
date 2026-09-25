@@ -117,22 +117,35 @@ async function completeCurrentTask() {
 
   try {
 
-    await callSupabase(
-      "complete_task",
-      {
-        p_user_id: USER_ID,
-        p_task_id: currentTask.task_id
-      }
-    );
+    const result =
+      await callSupabase(
+        "complete_task",
+        {
+          p_user_id: USER_ID,
+          p_task_id: currentTask.task_id
+        }
+      );
+
+    if (result !== true) {
+      throw new Error(
+        "The task was not marked as completed."
+      );
+    }
+
+    currentTask = null;
 
     await getNextTask();
 
   } catch (error) {
 
-    console.error(error);
+    console.error(
+      "COMPLETE TASK ERROR:",
+      error
+    );
 
     alert(
-      "I couldn't mark that task as complete."
+      "I couldn't mark that task as complete: " +
+      error.message
     );
   }
 }
