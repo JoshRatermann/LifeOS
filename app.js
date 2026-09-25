@@ -332,37 +332,43 @@ function chooseDueDate(option) {
   }
 }
 document
-  .querySelectorAll(".task-duration-button")
-  .forEach(button => {
+  document.addEventListener(
+  "click",
+  event => {
 
-    button.addEventListener(
-      "click",
-      () => {
+    const button =
+      event.target.closest(
+        ".task-duration-button"
+      );
 
-        selectedTaskDuration =
-          parseInt(
-            button.dataset.minutes,
-            10
-          );
+    if (!button) {
+      return;
+    }
 
-        document
-          .querySelectorAll(
-            ".task-duration-button"
-          )
-          .forEach(btn => {
-            btn.classList.remove(
-              "selected"
-            );
-          });
+    selectedTaskDuration =
+      parseInt(
+        button.dataset.minutes,
+        10
+      );
 
-        button.classList.add(
+    document
+      .querySelectorAll(
+        ".task-duration-button"
+      )
+      .forEach(btn => {
+
+        btn.classList.remove(
           "selected"
         );
 
-      }
+      });
+
+    button.classList.add(
+      "selected"
     );
 
-  });
+  }
+);
 
 async function addNewTask() {
 
