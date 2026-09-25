@@ -334,7 +334,7 @@ async function addNewTask() {
 
   const input =
     document.getElementById(
-      "title-input"
+      "task-title-input"
     );
 
   if (!input) {
