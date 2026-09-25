@@ -224,7 +224,7 @@ function openAddModal() {
     .classList.remove("hidden");
 
   document
-    .getElementById("task-title-input")
+    .getElementById("title-input")
     .focus();
 }
 
@@ -236,7 +236,7 @@ function closeAddModal() {
     .classList.add("hidden");
 
   document
-    .getElementById("task-title-input")
+    .getElementById("title-input")
     .value = "";
 
   selectedDueDate = null;
