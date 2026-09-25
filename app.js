@@ -405,7 +405,14 @@ async function addNewTask() {
     alert(
       "Choose when this needs to be done."
     );
+if (!selectedTaskDuration) {
 
+  alert(
+    "Choose about how long this will take."
+  );
+
+  return;
+}
     return;
   }
 
