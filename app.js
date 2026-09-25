@@ -241,7 +241,6 @@ function closeAddModal() {
 
   selectedDueDate = null;
   selectedTimeHorizon = null;
-
 }
 
 
@@ -295,7 +294,7 @@ function chooseDueDate(option) {
       "tomorrow";
   }
 
-  if (option === "week") {
+  if (option === "this_week") {
 
     selectedDueDate = null;
 
@@ -337,6 +336,15 @@ async function addNewTask() {
     document.getElementById(
       "title-input"
     );
+
+  if (!input) {
+
+    alert(
+      "Life Manager couldn't find the task title box."
+    );
+
+    return;
+  }
 
   const title =
     input.value.trim();
