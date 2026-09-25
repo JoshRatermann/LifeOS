@@ -8,6 +8,7 @@ let selectedTimeHorizon = "none";
 let selectedAvailableMinutes = 30;
 let selectedEnergyLevel = "normal";
 let currentRoutine = null;
+let selectedTaskDuration = null;
 
 async function callSupabase(functionName, body) {
   const response = await fetch(
@@ -242,6 +243,7 @@ function closeAddModal() {
 
   selectedDueDate = null;
   selectedTimeHorizon = null;
+  selectedTimeDuration = null;
 }
 
 
@@ -329,7 +331,38 @@ function chooseDueDate(option) {
     );
   }
 }
+document
+  .querySelectorAll(".task-duration-button")
+  .forEach(button => {
 
+    button.addEventListener(
+      "click",
+      () => {
+
+        selectedTaskDuration =
+          parseInt(
+            button.dataset.minutes,
+            10
+          );
+
+        document
+          .querySelectorAll(
+            ".task-duration-button"
+          )
+          .forEach(btn => {
+            btn.classList.remove(
+              "selected"
+            );
+          });
+
+        button.classList.add(
+          "selected"
+        );
+
+      }
+    );
+
+  });
 
 async function addNewTask() {
 
