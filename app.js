@@ -243,7 +243,7 @@ function closeAddModal() {
 
   selectedDueDate = null;
   selectedTimeHorizon = null;
-  selectedTimeDuration = null;
+  selectedTaskDuration = null;
 }
 
 
