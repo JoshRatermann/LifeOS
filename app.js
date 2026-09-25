@@ -338,9 +338,10 @@ async function addNewTask() {
       "title-input"
     );
 
-  const title =
-    input.value.trim();
-
+ const input =
+  document.getElementById(
+    "title-input"
+  );
   if (!title) {
 
     alert(
