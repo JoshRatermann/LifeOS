@@ -605,7 +605,15 @@ currentRoutine = routine;
         document
           .getElementById("manage-routine-title")
           .textContent = routine.title;
+const pauseButton =
+  document.getElementById(
+    "pause-routine-button"
+  );
 
+pauseButton.textContent =
+  routine.active
+    ? "Pause Routine"
+    : "Resume Routine";
         document
           .getElementById("manage-routine-details")
           .textContent =
