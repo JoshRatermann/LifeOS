@@ -205,7 +205,7 @@ async function skipCurrentTask(reason) {
 
 
 // =========================
-// ADD TASK
+// OPEN ADD TASK MODAL
 // =========================
 
 function openAddModal() {
@@ -220,14 +220,13 @@ function openAddModal() {
     });
 
   document
-    .getElementById("add-modal")
+    .getElementById("add-task-modal")
     .classList.remove("hidden");
 
   document
-    .getElementById("new-task-input")
+    .getElementById("task-title-input")
     .focus();
 }
-
 
 function closeAddModal() {
 
