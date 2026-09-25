@@ -1017,6 +1017,79 @@ document
     }
   );
 // =========================
+// DELETE ROUTINE
+// =========================
+
+document
+  .getElementById("delete-routine-button")
+  .addEventListener(
+    "click",
+    async () => {
+
+      if (!currentRoutine) {
+        return;
+      }
+
+      const confirmed =
+        confirm(
+          `Delete "${currentRoutine.title}"? This cannot be undone.`
+        );
+
+      if (!confirmed) {
+        return;
+      }
+
+      try {
+
+        await callSupabase(
+          "delete_recurring_task",
+          {
+            p_user_id: USER_ID,
+            p_recurring_id:
+              currentRoutine.recurring_id
+          }
+        );
+
+        currentRoutine = null;
+
+        document
+          .getElementById(
+            "routine-management-view"
+          )
+          .classList.add("hidden");
+
+        document
+          .getElementById(
+            "routines-view"
+          )
+          .classList.remove("hidden");
+
+        pageTitle.textContent =
+          "Routines";
+
+        routinesTab.classList.add("active");
+        todayTab.classList.remove("active");
+        upcomingTab.classList.remove("active");
+
+        await loadRoutines();
+
+      } catch (error) {
+
+        console.error(
+          "DELETE ROUTINE ERROR:",
+          error
+        );
+
+        alert(
+          "Couldn't delete this routine: " +
+          error.message
+        );
+
+      }
+
+    }
+  );
+// =========================
 // BACK TO ROUTINES
 // =========================
 
