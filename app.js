@@ -411,16 +411,18 @@ async function addNewTask() {
 
   try {
 
-    await callSupabase(
-      "add_task",
-      {
-        p_user_id: USER_ID,
-        p_title: title,
-        p_due_date: selectedDueDate,
-        p_time_horizon:
-          selectedTimeHorizon
-      }
-    );
+   await callSupabase(
+  "add_task",
+  {
+    p_user_id: USER_ID,
+    p_title: title,
+    p_due_date: selectedDueDate,
+    p_time_horizon:
+      selectedTimeHorizon,
+    p_estimated_minutes:
+      selectedTaskDuration
+  }
+);
 
     closeAddModal();
 
