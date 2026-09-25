@@ -212,6 +212,7 @@ function openAddModal() {
 
   selectedDueDate = null;
   selectedTimeHorizon = null;
+  selectedTaskDuration = null;
 
   document
     .querySelectorAll(".due-button")
