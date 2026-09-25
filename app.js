@@ -333,11 +333,6 @@ function chooseDueDate(option) {
 
 async function addNewTask() {
 
-  const input =
-    document.getElementById(
-      "title-input"
-    );
-
  const input =
   document.getElementById(
     "title-input"
