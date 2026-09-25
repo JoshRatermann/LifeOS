@@ -575,13 +575,22 @@ async function loadRoutines() {
 
       html += `
   <div
-    class="upcoming-task routine-card"
-    data-routine-id="${routine.recurring_id}"
-  >
-    <strong>${routine.title}</strong>
-    <div>${frequencyText} · ${durationText}</div>
-    <div>Next: ${nextDueText}</div>
-  </div>
+   <div
+  class="upcoming-task routine-card"
+  data-routine-id="${routine.recurring_id}"
+>
+  <strong>${routine.title}</strong>
+
+  <div>${frequencyText} · ${durationText}</div>
+
+  <div>Next: ${nextDueText}</div>
+
+  ${
+    routine.active
+      ? ""
+      : `<div class="routine-paused">PAUSED</div>`
+  }
+</div>
 `;
     });
 
