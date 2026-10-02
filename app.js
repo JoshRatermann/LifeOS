@@ -781,6 +781,115 @@ function openTaskManagement(task) {
   }
 
 }
+document.addEventListener(
+  "click",
+  event => {
+
+    const dueButton =
+      event.target.closest(
+        ".edit-due-button"
+      );
+
+    if (dueButton) {
+
+      document
+        .querySelectorAll(
+          ".edit-due-button"
+        )
+        .forEach(button => {
+
+          button.classList.remove(
+            "selected"
+          );
+
+        });
+
+      dueButton.classList.add(
+        "selected"
+      );
+
+    }
+
+
+    const durationButton =
+      event.target.closest(
+        ".edit-duration-button"
+      );
+
+    if (durationButton) {
+
+      document
+        .querySelectorAll(
+          ".edit-duration-button"
+        )
+        .forEach(button => {
+
+          button.classList.remove(
+            "selected"
+          );
+
+        });
+
+      durationButton.classList.add(
+        "selected"
+      );
+
+    }
+
+
+    const priorityButton =
+      event.target.closest(
+        ".edit-priority-button"
+      );
+
+    if (priorityButton) {
+
+      document
+        .querySelectorAll(
+          ".edit-priority-button"
+        )
+        .forEach(button => {
+
+          button.classList.remove(
+            "selected"
+          );
+
+        });
+
+      priorityButton.classList.add(
+        "selected"
+      );
+
+    }
+
+
+    const energyButton =
+      event.target.closest(
+        ".edit-energy-button"
+      );
+
+    if (energyButton) {
+
+      document
+        .querySelectorAll(
+          ".edit-energy-button"
+        )
+        .forEach(button => {
+
+          button.classList.remove(
+            "selected"
+          );
+
+        });
+
+      energyButton.classList.add(
+        "selected"
+      );
+
+    }
+
+  }
+);
 // =========================
 // ROUTINES
 // =========================
