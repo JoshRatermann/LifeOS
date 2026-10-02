@@ -218,7 +218,209 @@
       <div id="upcoming-list"></div>
 
     </section>
+<!-- EDIT TASK VIEW -->
+<div
+  id="task-management-view"
+  class="hidden"
+>
 
+  <button
+    id="back-to-upcoming"
+    class="back-button"
+  >
+    ← Upcoming
+  </button>
+
+  <div class="task-management-card">
+
+    <h2 id="manage-task-title">
+      Edit Task
+    </h2>
+
+    <p class="due-label">
+      What needs to happen?
+    </p>
+
+    <input
+      id="edit-task-title-input"
+      type="text"
+      autocomplete="off"
+    >
+
+    <p class="due-label">
+      When does this need to happen?
+    </p>
+
+    <div class="due-options">
+
+      <button
+        class="edit-due-button"
+        data-due="today"
+      >
+        Today
+      </button>
+
+      <button
+        class="edit-due-button"
+        data-due="tomorrow"
+      >
+        Tomorrow
+      </button>
+
+      <button
+        class="edit-due-button"
+        data-due="this_week"
+      >
+        This week
+      </button>
+
+      <button
+        class="edit-due-button"
+        data-due="none"
+      >
+        No deadline
+      </button>
+
+    </div>
+
+    <p class="due-label">
+      About how long will this take?
+    </p>
+
+    <div class="task-duration-options">
+
+      <button
+        class="edit-duration-button"
+        data-minutes="5"
+      >
+        5 min
+      </button>
+
+      <button
+        class="edit-duration-button"
+        data-minutes="10"
+      >
+        10 min
+      </button>
+
+      <button
+        class="edit-duration-button"
+        data-minutes="15"
+      >
+        15 min
+      </button>
+
+      <button
+        class="edit-duration-button"
+        data-minutes="30"
+      >
+        30 min
+      </button>
+
+      <button
+        class="edit-duration-button"
+        data-minutes="45"
+      >
+        45 min
+      </button>
+
+      <button
+        class="edit-duration-button"
+        data-minutes="60"
+      >
+        1 hr
+      </button>
+
+      <button
+        class="edit-duration-button"
+        data-minutes="90"
+      >
+        90 min
+      </button>
+
+      <button
+        class="edit-duration-button"
+        data-minutes="120"
+      >
+        2+ hrs
+      </button>
+
+    </div>
+
+    <p class="due-label">
+      How important is this?
+    </p>
+
+    <div class="due-options">
+
+      <button
+        class="edit-priority-button"
+        data-priority="must_do"
+      >
+        Must do
+      </button>
+
+      <button
+        class="edit-priority-button"
+        data-priority="important"
+      >
+        Important
+      </button>
+
+      <button
+        class="edit-priority-button"
+        data-priority="routine"
+      >
+        Routine
+      </button>
+
+      <button
+        class="edit-priority-button"
+        data-priority="optional"
+      >
+        Optional
+      </button>
+
+    </div>
+
+    <p class="due-label">
+      What kind of energy does this take?
+    </p>
+
+    <div class="due-options">
+
+      <button
+        class="edit-energy-button"
+        data-energy="low"
+      >
+        Low
+      </button>
+
+      <button
+        class="edit-energy-button"
+        data-energy="normal"
+      >
+        Normal
+      </button>
+
+      <button
+        class="edit-energy-button"
+        data-energy="high"
+      >
+        High
+      </button>
+
+    </div>
+
+    <button
+      id="save-task-edit-button"
+      class="done-button"
+    >
+      Save changes
+    </button>
+
+  </div>
+</div>
 
     <!-- ROUTINES -->
 
