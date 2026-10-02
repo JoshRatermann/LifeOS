@@ -780,6 +780,106 @@ pauseButton.textContent =
 
   }
 }
+function openTaskManagement(task) {
+
+  document
+    .getElementById(
+      "upcoming-view"
+    )
+    .classList.add(
+      "hidden"
+    );
+
+  document
+    .getElementById(
+      "task-management-view"
+    )
+    .classList.remove(
+      "hidden"
+    );
+
+  document
+    .getElementById(
+      "edit-task-title-input"
+    )
+    .value =
+      task.title;
+
+  document
+    .querySelectorAll(
+      ".edit-due-button"
+    )
+    .forEach(button => {
+
+      button.classList.remove(
+        "selected"
+      );
+
+    });
+
+  const dueButton =
+    document.querySelector(
+      `.edit-due-button[data-due="${task.time_horizon}"]`
+    );
+
+  if (dueButton) {
+
+    dueButton.classList.add(
+      "selected"
+    );
+
+  }
+
+  document
+    .querySelectorAll(
+      ".edit-duration-button"
+    )
+    .forEach(button => {
+
+      button.classList.remove(
+        "selected"
+      );
+
+    });
+
+  const durationButton =
+    document.querySelector(
+      `.edit-duration-button[data-minutes="${task.estimated_minutes}"]`
+    );
+
+  if (durationButton) {
+
+    durationButton.classList.add(
+      "selected"
+    );
+
+  }
+
+  document
+    .querySelectorAll(
+      ".edit-priority-button"
+    )
+    .forEach(button => {
+
+      button.classList.remove(
+        "selected"
+      );
+
+    });
+
+  document
+    .querySelectorAll(
+      ".edit-energy-button"
+    )
+    .forEach(button => {
+
+      button.classList.remove(
+        "selected"
+      );
+
+    });
+
+}
 // =========================
 // NAVIGATION
 // =========================
