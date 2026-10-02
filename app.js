@@ -499,6 +499,7 @@ async function loadUpcomingTasks() {
         groups[
           task.time_horizon
         ].push(task);
+
       }
 
     });
@@ -516,7 +517,10 @@ async function loadUpcomingTasks() {
       groups.tomorrow.forEach(task => {
 
         html += `
-          <div class="upcoming-task">
+          <div
+            class="upcoming-task"
+            data-task-id="${task.task_id}"
+          >
             <span>${task.title}</span>
           </div>
         `;
@@ -537,7 +541,10 @@ async function loadUpcomingTasks() {
       groups.this_week.forEach(task => {
 
         html += `
-          <div class="upcoming-task">
+          <div
+            class="upcoming-task"
+            data-task-id="${task.task_id}"
+          >
             <span>${task.title}</span>
           </div>
         `;
@@ -558,7 +565,10 @@ async function loadUpcomingTasks() {
       groups.none.forEach(task => {
 
         html += `
-          <div class="upcoming-task">
+          <div
+            class="upcoming-task"
+            data-task-id="${task.task_id}"
+          >
             <span>${task.title}</span>
           </div>
         `;
@@ -569,6 +579,43 @@ async function loadUpcomingTasks() {
     }
 
     list.innerHTML = html;
+
+
+    /*
+      MAKE UPCOMING TASKS CLICKABLE
+    */
+
+    document
+      .querySelectorAll(
+        ".upcoming-task"
+      )
+      .forEach(card => {
+
+        card.addEventListener(
+          "click",
+          () => {
+
+            const taskId =
+              card.dataset.taskId;
+
+            const task =
+              tasks.find(
+                item =>
+                  item.task_id === taskId
+              );
+
+            if (!task) {
+              return;
+            }
+
+            openTaskManagement(
+              task
+            );
+
+          }
+        );
+
+      });
 
   } catch (error) {
 
@@ -585,7 +632,6 @@ async function loadUpcomingTasks() {
     `;
   }
 }
-
 
 // =========================
 // ROUTINES
