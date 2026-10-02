@@ -648,6 +648,11 @@ function openTaskManagement(task) {
       "hidden"
     );
 
+
+  /*
+    TASK TITLE
+  */
+
   document
     .getElementById(
       "edit-task-title-input"
@@ -655,6 +660,10 @@ function openTaskManagement(task) {
     .value =
       task.title;
 
+
+  /*
+    DUE / TIME HORIZON
+  */
 
   document
     .querySelectorAll(
@@ -667,7 +676,6 @@ function openTaskManagement(task) {
       );
 
     });
-
 
   const dueButton =
     document.querySelector(
@@ -683,6 +691,10 @@ function openTaskManagement(task) {
   }
 
 
+  /*
+    DURATION
+  */
+
   document
     .querySelectorAll(
       ".edit-duration-button"
@@ -694,7 +706,6 @@ function openTaskManagement(task) {
       );
 
     });
-
 
   const durationButton =
     document.querySelector(
@@ -710,6 +721,10 @@ function openTaskManagement(task) {
   }
 
 
+  /*
+    PRIORITY
+  */
+
   document
     .querySelectorAll(
       ".edit-priority-button"
@@ -722,6 +737,23 @@ function openTaskManagement(task) {
 
     });
 
+  const priorityButton =
+    document.querySelector(
+      `.edit-priority-button[data-priority="${task.priority}"]`
+    );
+
+  if (priorityButton) {
+
+    priorityButton.classList.add(
+      "selected"
+    );
+
+  }
+
+
+  /*
+    ENERGY
+  */
 
   document
     .querySelectorAll(
@@ -735,8 +767,20 @@ function openTaskManagement(task) {
 
     });
 
-}
+  const energyButton =
+    document.querySelector(
+      `.edit-energy-button[data-energy="${task.energy_required}"]`
+    );
 
+  if (energyButton) {
+
+    energyButton.classList.add(
+      "selected"
+    );
+
+  }
+
+}
 // =========================
 // ROUTINES
 // =========================
