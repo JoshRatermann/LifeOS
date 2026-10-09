@@ -341,3 +341,31 @@ h1 {
   color: white;
   border-color: #222;
 }
+
+.edit-due-button,
+.edit-duration-button,
+.edit-priority-button,
+.edit-energy-button {
+  border: 1px solid #ccc;
+  background: white;
+  color: #222;
+  border-radius: 8px;
+  padding: 10px 14px;
+  cursor: pointer;
+}
+
+.edit-due-button.selected,
+.edit-duration-button.selected,
+.edit-priority-button.selected,
+.edit-energy-button.selected {
+  background: #222;
+  color: white;
+  border-color: #222;
+}
+
+.edit-due-button:hover,
+.edit-duration-button:hover,
+.edit-priority-button:hover,
+.edit-energy-button:hover {
+  border-color: #222;
+}
