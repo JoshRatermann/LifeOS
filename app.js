@@ -1038,7 +1038,7 @@ pauseButton.textContent =
   }
 }
 function openTaskManagement(task) {
-
+  currentEditingTask = task;
   document
     .getElementById(
       "upcoming-view"
@@ -2097,3 +2097,104 @@ document
 
 getNextTask();
 
+
+document
+  .getElementById("save-task-edit-button")
+  .addEventListener("click", async () => {
+
+    if (!currentEditingTask) {
+      alert("I couldn't identify the task you're editing.");
+      return;
+    }
+
+    const title = document
+      .getElementById("edit-task-title-input")
+      .value.trim();
+
+    const dueButton = document.querySelector(
+      ".edit-due-button.selected"
+    );
+
+    const durationButton = document.querySelector(
+      ".edit-duration-button.selected"
+    );
+
+    const priorityButton = document.querySelector(
+      ".edit-priority-button.selected"
+    );
+
+    const energyButton = document.querySelector(
+      ".edit-energy-button.selected"
+    );
+
+    if (!title) {
+      alert("Please enter a task name.");
+      return;
+    }
+
+    if (!dueButton || !durationButton || !priorityButton || !energyButton) {
+      alert("Please select a deadline, duration, priority, and energy level.");
+      return;
+    }
+
+    const timeHorizon = dueButton.dataset.due;
+    const estimatedMinutes = parseInt(
+      durationButton.dataset.minutes,
+      10
+    );
+    const priority = priorityButton.dataset.priority;
+    const energyRequired = energyButton.dataset.energy;
+
+    let dueDate = null;
+
+    if (timeHorizon === "today") {
+      dueDate = formatDate(new Date());
+    } else if (timeHorizon === "tomorrow") {
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      dueDate = formatDate(tomorrow);
+    }
+
+    const saveButton = document.getElementById(
+      "save-task-edit-button"
+    );
+
+    saveButton.disabled = true;
+    saveButton.textContent = "Saving...";
+
+    try {
+      const result = await callSupabase("update_task", {
+        p_user_id: USER_ID,
+        p_task_id: currentEditingTask.task_id,
+        p_title: title,
+        p_due_date: dueDate,
+        p_time_horizon: timeHorizon,
+        p_estimated_minutes: estimatedMinutes,
+        p_priority: priority,
+        p_energy_required: energyRequired
+      });
+
+      if (result !== true) {
+        throw new Error("The task wasn't updated. Please try again.");
+      }
+
+      currentEditingTask = null;
+
+      document
+        .getElementById("task-management-view")
+        .classList.add("hidden");
+
+      document
+        .getElementById("upcoming-view")
+        .classList.remove("hidden");
+
+      await loadUpcomingTasks();
+
+    } catch (error) {
+      console.error("UPDATE TASK ERROR:", error);
+      alert("I couldn't save those changes: " + error.message);
+    } finally {
+      saveButton.disabled = false;
+      saveButton.textContent = "Save changes";
+    }
+  });
