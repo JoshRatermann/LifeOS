@@ -1163,7 +1163,23 @@ document.addEventListener("click", event => {
   }
 
 });
+document
+  .getElementById("back-to-upcoming")
+  .addEventListener("click", async () => {
 
+    currentEditingTask = null;
+
+    document
+      .getElementById("task-management-view")
+      .classList.add("hidden");
+
+    document
+      .getElementById("upcoming-view")
+      .classList.remove("hidden");
+
+    await loadUpcomingTasks();
+
+  });
 // =========================
 // NAVIGATION
 // =========================
