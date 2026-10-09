@@ -1137,6 +1137,33 @@ function openTaskManagement(task) {
     });
 
 }
+
+document.addEventListener("click", event => {
+
+  const groups = [
+    ".edit-due-button",
+    ".edit-duration-button",
+    ".edit-priority-button",
+    ".edit-energy-button"
+  ];
+
+  for (const selector of groups) {
+    const button = event.target.closest(selector);
+
+    if (!button) {
+      continue;
+    }
+
+    document.querySelectorAll(selector).forEach(item => {
+      item.classList.remove("selected");
+    });
+
+    button.classList.add("selected");
+    break;
+  }
+
+});
+
 // =========================
 // NAVIGATION
 // =========================
