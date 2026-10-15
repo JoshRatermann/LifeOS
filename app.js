@@ -2357,3 +2357,25 @@ function escapeHtml(value) {
     "'": "&#39;"
   })[character]);
 }
+
+document
+  .getElementById("today-list-tab")
+  .addEventListener("click", async () => {
+
+    [
+      "today-view",
+      "upcoming-view",
+      "routines-view",
+      "routine-management-view",
+      "task-management-view"
+    ].forEach(id => {
+      const view = document.getElementById(id);
+      if (view) view.classList.add("hidden");
+    });
+
+    document
+      .getElementById("today-list-view")
+      .classList.remove("hidden");
+
+    await loadTodayTasks();
+  });
