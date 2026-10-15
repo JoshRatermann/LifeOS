@@ -2241,3 +2241,119 @@ document
       saveButton.textContent = "Save changes";
     }
   });
+
+async function loadTodayTasks() {
+  const container = document.getElementById("today-list-content");
+
+  container.innerHTML = "<p>Loading today's tasks...</p>";
+
+  try {
+    // Generate any recurring tasks that are due.
+    await callSupabase("process_recurring_tasks", {
+      p_user_id: USER_ID
+    });
+
+    const tasks = await callSupabase("get_today_tasks", {
+      p_user_id: USER_ID
+    });
+
+    if (!tasks || tasks.length === 0) {
+      container.innerHTML = `
+        <div class="upcoming-empty">
+          <p>Nothing needs attention today.</p>
+          <span>You're caught up!</span>
+        </div>
+      `;
+      return;
+    }
+
+    const groups = {
+      overdue: [],
+      today: [],
+      this_week: []
+    };
+
+    tasks.forEach(task => {
+      if (task.due_date && task.due_date < formatDate(new Date())) {
+        groups.overdue.push(task);
+      } else if (task.time_horizon === "this_week") {
+        groups.this_week.push(task);
+      } else {
+        groups.today.push(task);
+      }
+    });
+
+    let html = "";
+
+    function renderGroup(title, items) {
+      if (items.length === 0) return "";
+
+      return `
+        <section class="upcoming-group">
+          <h3>${title}</h3>
+          ${items.map(task => `
+            <div
+              class="upcoming-task today-list-task"
+              data-task-id="${task.task_id}"
+              role="button"
+              tabindex="0"
+            >
+              <strong>${escapeHtml(task.title)}</strong>
+              <div>
+                ${task.estimated_minutes} min
+                · ${escapeHtml(task.priority || "routine")}
+              </div>
+            </div>
+          `).join("")}
+        </section>
+      `;
+    }
+
+    html += renderGroup("Overdue", groups.overdue);
+    html += renderGroup("Due Today", groups.today);
+    html += renderGroup("This Week", groups.this_week);
+
+    container.innerHTML = html;
+
+    container.querySelectorAll(".today-list-task").forEach(card => {
+      const openTask = () => {
+        const task = tasks.find(
+          item => item.task_id === card.dataset.taskId
+        );
+
+        if (task) {
+          openTaskManagement(task);
+        }
+      };
+
+      card.addEventListener("click", openTask);
+
+      card.addEventListener("keydown", event => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          openTask();
+        }
+      });
+    });
+
+  } catch (error) {
+    console.error("TODAY'S TASKS ERROR:", error);
+
+    container.innerHTML = `
+      <div class="upcoming-empty">
+        <p>Couldn't load today's tasks.</p>
+        <span>${escapeHtml(error.message)}</span>
+      </div>
+    `;
+  }
+}
+
+function escapeHtml(value) {
+  return String(value ?? "").replace(/[&<>"']/g, character => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  })[character]);
+}
