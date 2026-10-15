@@ -631,7 +631,11 @@ async function loadUpcomingTasks() {
 
 
 function openTaskManagement(task) {
-
+  currentTaskManagementSource =
+    document.getElementById("today-list-view")
+      .classList.contains("hidden")
+      ? "upcoming-view"
+      : "today-list-view";
   document
     .getElementById(
       "upcoming-view"
@@ -1039,6 +1043,7 @@ pauseButton.textContent =
 }
 function openTaskManagement(task) {
   currentEditingTask = task;
+
   document
     .getElementById(
       "upcoming-view"
