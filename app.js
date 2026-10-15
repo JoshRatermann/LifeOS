@@ -1168,9 +1168,13 @@ document.addEventListener("click", event => {
   }
 
 });
+
 document
   .getElementById("back-to-upcoming")
   .addEventListener("click", async () => {
+
+    const destination =
+      currentTaskManagementSource || "upcoming-view";
 
     currentEditingTask = null;
 
@@ -1179,12 +1183,16 @@ document
       .classList.add("hidden");
 
     document
-      .getElementById("upcoming-view")
+      .getElementById(destination)
       .classList.remove("hidden");
 
-    await loadUpcomingTasks();
-
+    if (destination === "today-list-view") {
+      await loadTodayTasks();
+    } else {
+      await loadUpcomingTasks();
+    }
   });
+
 // =========================
 // NAVIGATION
 // =========================
