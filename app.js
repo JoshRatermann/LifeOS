@@ -1245,6 +1245,10 @@ todayTab.addEventListener(
     );
 
     document
+      .getElementById("today-view")
+      .classList.remove("hidden");
+
+    document
       .querySelector(".task-card")
       .classList.remove(
         "hidden"
