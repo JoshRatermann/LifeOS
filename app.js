@@ -1230,7 +1230,7 @@ const pageTitle =
 
 todayTab.addEventListener(
   "click",
-  () => {
+    async () => {
 
     todayTab.classList.add(
       "active"
@@ -1286,7 +1286,7 @@ todayTab.addEventListener(
 
     pageTitle.textContent =
       "What should I do?";
-
+    await getNextTask();
 
 
 upcomingTab.addEventListener(
