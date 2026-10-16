@@ -1260,14 +1260,29 @@ todayTab.addEventListener(
       "hidden"
     );
 
+   
     routinesView.classList.add(
       "hidden"
     );
 
+    document
+      .getElementById("today-list-view")
+      .classList.add("hidden");
+
+    document
+      .getElementById("task-management-view")
+      .classList.add("hidden");
+
+    const routineManagementView =
+      document.getElementById("routine-management-view");
+
+    if (routineManagementView) {
+      routineManagementView.classList.add("hidden");
+    }
+
     pageTitle.textContent =
       "What should I do?";
-  }
-);
+
 
 
 upcomingTab.addEventListener(
