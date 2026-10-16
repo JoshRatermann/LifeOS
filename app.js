@@ -1287,7 +1287,8 @@ todayTab.addEventListener(
     pageTitle.textContent =
       "What should I do?";
     await getNextTask();
-
+    }
+  );
 
 upcomingTab.addEventListener(
   "click",
