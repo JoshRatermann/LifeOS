@@ -1321,7 +1321,9 @@ upcomingTab.addEventListener(
     upcomingView.classList.remove(
       "hidden"
     );
-
+document
+  .getElementById("today-list-view")
+  .classList.add("hidden");
     routinesView.classList.add(
       "hidden"
     );
