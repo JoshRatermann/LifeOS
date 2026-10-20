@@ -636,6 +636,11 @@ function openTaskManagement(task) {
       .classList.contains("hidden")
       ? "upcoming-view"
       : "today-list-view";
+  
+  document
+    .getElementById("today-list-view")
+    .classList.add("hidden");
+
   document
     .getElementById(
       "upcoming-view"
