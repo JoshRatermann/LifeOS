@@ -2373,7 +2373,13 @@ async function loadTodayTasks() {
         }
       };
 
-      card.addEventListener("click", openTask);
+     card.addEventListener("click", event => {
+  if (event.target.closest(".today-task-done")) {
+    return;
+  }
+
+  openTask();
+});
 
       card.addEventListener("keydown", event => {
         if (event.key === "Enter" || event.key === " ") {
