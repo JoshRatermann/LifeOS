@@ -2256,7 +2256,17 @@ document
         p_priority: priority,
         p_energy_required: energyRequired
       });
-
+console.log("TASK UPDATE DEBUG:", {
+  result,
+  taskBeingEdited: currentEditingTask,
+  userId: USER_ID,
+  title,
+  dueDate,
+  timeHorizon,
+  estimatedMinutes,
+  priority,
+  energyRequired
+});
       if (result !== true) {
         throw new Error("The task wasn't updated. Please try again.");
       }
