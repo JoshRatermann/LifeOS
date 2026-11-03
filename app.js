@@ -2383,6 +2383,32 @@ async function loadTodayTasks() {
       });
     });
 
+    container.querySelectorAll(".today-task-done").forEach(button => {
+      button.addEventListener("click", async event => {
+        event.stopPropagation();
+
+        const taskId = button.dataset.taskId;
+
+        try {
+          button.disabled = true;
+          button.textContent = "Saving...";
+
+          await callSupabase("complete_task", {
+            p_user_id: USER_ID,
+            p_task_id: taskId
+          });
+
+          await loadTodayTasks();
+
+        } catch (error) {
+          console.error("COMPLETE TASK ERROR:", error);
+          button.disabled = false;
+          button.textContent = "Done";
+          alert("Couldn't complete this task: " + error.message);
+        }
+      });
+    });
+
   } catch (error) {
     console.error("TODAY'S TASKS ERROR:", error);
 
