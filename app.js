@@ -2399,11 +2399,21 @@ async function loadTodayTasks() {
           button.disabled = true;
           button.textContent = "Saving...";
 
-          await callSupabase("complete_task", {
-            p_user_id: USER_ID,
-            p_task_id: taskId
-          });
+         await callSupabase("complete_task", {
+  p_user_id: USER_ID,
+  p_task_id: taskId
+});
 
+await loadTodayTasks();
+
+const message = document.getElementById("today-completion-message");
+const completedTask = tasks.find(item => item.task_id === taskId);
+
+if (message) {
+  message.textContent =
+    `✓ ${completedTask?.title || "Task"} completed! Nice work.`;
+  message.classList.remove("hidden");
+}
           await loadTodayTasks();
 
         } catch (error) {
