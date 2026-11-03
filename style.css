@@ -437,3 +437,61 @@ h1 {
 #today-completion-message.hidden {
   display: none;
 }
+/* MAIN NAVIGATION */
+
+.main-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px;
+  margin: 20px 0 24px;
+  background: #f0f2f1;
+  border-radius: 14px;
+  flex-wrap: wrap;
+}
+
+.main-nav .nav-tab,
+.main-nav button {
+  flex: 1;
+  min-width: 90px;
+  padding: 12px 16px;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  color: #59635e;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease,
+              box-shadow 0.2s ease;
+}
+
+.main-nav .nav-tab:hover,
+.main-nav button:hover {
+  background: #e2e9e4;
+  color: #246b45;
+}
+
+.main-nav .nav-tab.active {
+  background: #287a55;
+  color: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.12);
+}
+
+.main-nav button:focus-visible {
+  outline: 2px solid #287a55;
+  outline-offset: 2px;
+}
+
+@media (max-width: 500px) {
+  .main-nav {
+    gap: 4px;
+  }
+
+  .main-nav .nav-tab,
+  .main-nav button {
+    min-width: 0;
+    padding: 10px 8px;
+    font-size: 12px;
+  }
+}
