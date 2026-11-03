@@ -2339,6 +2339,13 @@ async function loadTodayTasks() {
               tabindex="0"
             >
               <strong>${escapeHtml(task.title)}</strong>
+              <button
+  class="today-task-done"
+  data-task-id="${task.task_id}"
+  type="button"
+>
+  Done
+</button>
               <div>
                 ${task.estimated_minutes} min
                 · ${escapeHtml(task.priority || "routine")}
