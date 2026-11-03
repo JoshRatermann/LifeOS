@@ -2473,8 +2473,18 @@ document
     });
 
     document
-      .getElementById("today-list-view")
-      .classList.remove("hidden");
+     document
+  .getElementById("today-list-view")
+  .classList.remove("hidden");
 
-    await loadTodayTasks();
+// Update active navigation tab
+document.querySelectorAll(".main-nav button").forEach(button => {
+  button.classList.remove("active");
+});
+
+document
+  .getElementById("today-list-tab")
+  .classList.add("active");
+
+await loadTodayTasks();
   });
