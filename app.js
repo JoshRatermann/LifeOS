@@ -331,7 +331,6 @@ function chooseDueDate(option) {
     );
   }
 }
-document
   document.addEventListener(
   "click",
   event => {
