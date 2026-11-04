@@ -385,9 +385,6 @@ async function addNewTask() {
 
   const title = input.value.trim();
   const areaId = areaSelect.value;
-console.log("AREA DEBUG:", {
-  areaSelectFound: !!areaSelect,
-  areaValue: areaId
 });
   if (!title) {
     alert("Tell me what needs to get done first.");
