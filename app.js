@@ -2250,18 +2250,7 @@ document
         p_energy_required: energyRequired,
         p_area_id: document.getElementById("edit-task-area-select").value
       });
-console.log("TASK UPDATE DEBUG:", {
-  result,
-  taskBeingEdited: currentEditingTask,
-  userId: USER_ID,
-  title,
-  dueDate,
-  timeHorizon,
-  estimatedMinutes,
-  priority,
-  energyRequired,
-  areaId: document.getElementById("edit-task-area-select").value
-});
+
       if (result !== true) {
         throw new Error("The task wasn't updated. Please try again.");
       }
