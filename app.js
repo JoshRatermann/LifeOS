@@ -385,7 +385,7 @@ async function addNewTask() {
 
   const title = input.value.trim();
   const areaId = areaSelect.value;
-}
+  
   if (!title) {
     alert("Tell me what needs to get done first.");
     input.focus();
