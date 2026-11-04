@@ -658,7 +658,10 @@ function openTaskManagement(task) {
     )
     .value =
       task.title;
-
+  // Set the existing task area
+  document
+    .getElementById("edit-task-area-select")
+    .value = task.area_id || "";
 
   /*
     DUE / TIME HORIZON
