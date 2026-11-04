@@ -373,63 +373,54 @@ document
 async function addNewTask() {
 
   const input =
-    document.getElementById(
-      "task-title-input"
-    );
+    document.getElementById("task-title-input");
+
+  const areaSelect =
+    document.getElementById("task-area-select");
 
   if (!input) {
-
-    alert(
-      "Life Manager couldn't find the task title box."
-    );
-
+    alert("Life Manager couldn't find the task title box.");
     return;
   }
 
-  const title =
-    input.value.trim();
+  const title = input.value.trim();
+  const areaId = areaSelect.value;
 
   if (!title) {
-
-    alert(
-      "Tell me what needs to get done first."
-    );
-
+    alert("Tell me what needs to get done first.");
     input.focus();
+    return;
+  }
 
+  if (!areaId) {
+    alert("Choose which area this task belongs to.");
+    areaSelect.focus();
     return;
   }
 
   if (!selectedTimeHorizon) {
+    alert("Choose when this needs to be done.");
+    return;
+  }
 
-    alert(
-      "Choose when this needs to be done."
-    );
-if (!selectedTaskDuration) {
-
-  alert(
-    "Choose about how long this will take."
-  );
-
-  return;
-}
+  if (!selectedTaskDuration) {
+    alert("Choose about how long this will take.");
     return;
   }
 
   try {
 
-   await callSupabase(
-  "add_task",
-  {
-    p_user_id: USER_ID,
-    p_title: title,
-    p_due_date: selectedDueDate,
-    p_time_horizon:
-      selectedTimeHorizon,
-    p_estimated_minutes:
-      selectedTaskDuration
-  }
-);
+    await callSupabase(
+      "add_task",
+      {
+        p_user_id: USER_ID,
+        p_title: title,
+        p_due_date: selectedDueDate,
+        p_time_horizon: selectedTimeHorizon,
+        p_estimated_minutes: selectedTaskDuration,
+        p_area_id: areaId
+      }
+    );
 
     closeAddModal();
 
@@ -437,10 +428,7 @@ if (!selectedTaskDuration) {
 
   } catch (error) {
 
-    console.error(
-      "ADD TASK ERROR:",
-      error
-    );
+    console.error("ADD TASK ERROR:", error);
 
     alert(
       "I couldn't add that task: " +
@@ -448,7 +436,6 @@ if (!selectedTaskDuration) {
     );
   }
 }
-
 
 // =========================
 // UPCOMING TASKS
