@@ -2248,6 +2248,7 @@ document
         p_estimated_minutes: estimatedMinutes,
         p_priority: priority,
         p_energy_required: energyRequired
+        p_area_id: document.getElementById("edit-task-area-select").value
       });
 console.log("TASK UPDATE DEBUG:", {
   result,
