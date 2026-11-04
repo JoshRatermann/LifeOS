@@ -2262,7 +2262,8 @@ console.log("TASK UPDATE DEBUG:", {
   timeHorizon,
   estimatedMinutes,
   priority,
-  energyRequired
+  energyRequired,
+  areaId: document.getElementById("edit-task-area-select").value
 });
       if (result !== true) {
         throw new Error("The task wasn't updated. Please try again.");
