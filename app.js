@@ -2355,7 +2355,44 @@ async function loadTodayTasks() {
     html += renderGroup("This Week", groups.this_week);
 
     container.innerHTML = html;
+// Render Work and Personal dashboard cards
+function renderAreaTaskCards(tasks) {
+  const workTasks = tasks.filter(task =>
+    task.area_id === "f5a8972a-9277-4c90-b764-39eff2ebddd6"
+  );
 
+  const personalAreaIds = [
+    "d39e069a-62e1-4bff-9b9f-4c58d19b9de5", // Home
+    "52c92aa0-d076-4312-90fa-752a3a247023", // Money
+    "197c5dd5-0f2a-43c3-9313-810da1181b9c", // Health
+    "171fb29a-a4f4-44b1-9432-3e55c608996d", // Food
+    "6d8b6d7b-4932-4b0f-93fe-5e3bc4c6a1ee", // Family
+    "d59d301d-da02-4bdc-a637-72c4f05a5ed4", // Pets
+    "6bb0b444-ed48-4606-8ec3-5429d9355f6c"  // Personal
+  ];
+
+  const personalTasks = tasks.filter(task =>
+    personalAreaIds.includes(task.area_id)
+  );
+
+  document.getElementById("work-task-count").textContent =
+    `${workTasks.length} tasks`;
+
+  document.getElementById("personal-task-count").textContent =
+    `${personalTasks.length} tasks`;
+
+  document.getElementById("work-task-list").innerHTML =
+    workTasks.length
+      ? workTasks.map(task => `<p>${escapeHtml(task.title)}</p>`).join("")
+      : "<p>No open work tasks.</p>";
+
+  document.getElementById("personal-task-list").innerHTML =
+    personalTasks.length
+      ? personalTasks.map(task => `<p>${escapeHtml(task.title)}</p>`).join("")
+      : "<p>No open personal tasks.</p>";
+}
+
+renderAreaTaskCards(tasks);
     container.querySelectorAll(".today-list-task").forEach(card => {
       const openTask = () => {
         const task = tasks.find(
