@@ -2171,7 +2171,7 @@ document
   );
 
 getNextTask();
-
+loadTodayTasks();
 
 document
   .getElementById("save-task-edit-button")
